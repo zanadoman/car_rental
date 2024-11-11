@@ -21,7 +21,6 @@ return new class extends Migration
             $table->date('takeaway')->nullable();
             $table->date('return')->nullable();
             $table->boolean('active');
-
             $table->timestamps();
         });
     }
