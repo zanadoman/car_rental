@@ -6,6 +6,8 @@ To host the website, make sure you have the following dependencies installed:
 - **php**
 - **MariaDB**
 
+---
+
 ## 🔧 Hosting Instructions
 
 Follow these steps to host the backend:
@@ -19,3 +21,9 @@ php artisan key:generate
 php artisan migrate:fresh
 php artisan serve
 ```
+---
+
+## 💪 Developers
+- Zana Domán (Z17V4D)
+- Plasku Dominik (AEEBES)
+- Borsodi István (F0M774)
