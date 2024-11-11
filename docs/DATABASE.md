@@ -27,28 +27,28 @@
 ---
 
 ## 🔑 Rents
-|Name       |Type              |Properties   |
-|:---------:|:----------------:|:-----------:|
-|id         |id()              |             |
-|customer   |foreignId(user_id)|constrained()|
-|car        |foreignId(car_id) |constrained()|
-|kilometers |unsignedInteger() |             |
-|begin      |date()            |             |
-|end        |date()            |             |
-|takeaway   |date()            |nullable()   |
-|return     |date()            |nullable()   |
-|active     |boolean()         |             |
+|Name       |Type                |Properties   |
+|:---------:|:------------------:|:-----------:|
+|id         |id()                |             |
+|customer   |foreignId('user_id')|constrained()|
+|car        |foreignId('car_id') |constrained()|
+|kilometers |unsignedInteger()   |             |
+|begin      |date()              |             |
+|end        |date()              |             |
+|takeaway   |date()              |nullable()   |
+|return     |date()              |nullable()   |
+|active     |boolean()           |             |
 
 ---
 
 ## 🧾 Receipts
-|Name       |Type              |Properties   |
-|:---------:|:----------------:|:-----------:|
-|id         |id()              |             |
-|customer   |foreignId(user_id)|constrained()|
-|car        |foreignId(car_id) |constrained()|
-|kilometers |unsignedInteger() |             |
-|begin      |date()            |             |
-|end        |date()            |             |
-|delay      |unsignedInteger() |nullable()   |
-|totalfee   |unsignedInteger() |             |
+|Name       |Type                |Properties   |
+|:---------:|:------------------:|:-----------:|
+|id         |id()                |             |
+|customer   |foreignId('user_id')|constrained()|
+|car        |foreignId('car_id') |constrained()|
+|kilometers |unsignedInteger()   |             |
+|begin      |date()              |             |
+|end        |date()              |             |
+|delay      |unsignedInteger()   |nullable()   |
+|totalfee   |unsignedInteger()   |             |
