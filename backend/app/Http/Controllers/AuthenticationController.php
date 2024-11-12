@@ -27,7 +27,12 @@ class AuthenticationController extends Controller
             return response()->json(['error' => 'Internal server error.'], 500);
         }
         Auth::login($user);
-        return response()->json(['success' => 'Successful registration.'], 201);
+        return response()->json([
+            'id' => Auth::user()->id,
+            'name' => Auth::user()->name,
+            'email' => Auth::user()->email,
+            'role' => Auth::user()->role
+        ], 201);
     }
 
     public function login(Request $request): JsonResponse
@@ -39,8 +44,17 @@ class AuthenticationController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+        $user = User::where('email', $request->json()->get('email'))->first();
+        if ($user !== null && !$user->active) {
+            return response()->json(['error' => 'Account suspended.'], 401);
+        }
         if (Auth::attempt($request->json()->all())) {
-            return response()->json(['success' => 'Successful login.'], 200);
+            return response()->json([
+                'id' => Auth::user()->id,
+                'name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+                'role' => Auth::user()->role
+            ], 200);
         }
         return response()->json(['error' => 'Invalid credentials.'], 401);
     }

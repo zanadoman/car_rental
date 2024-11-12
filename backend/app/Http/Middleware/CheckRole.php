@@ -20,7 +20,7 @@ class CheckRole
             return response()->json(['error' => 'Login required.'], 401);
         }
         if (!Auth::user()->active) {
-            return response()->json(['error' => 'Account suspended'], 401);
+            return response()->json(['error' => 'Account suspended.'], 401);
         }
         foreach (explode(',', $roles) as $role) {
             if (Auth::user()->role == $role) {
