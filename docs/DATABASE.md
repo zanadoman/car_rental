@@ -1,5 +1,7 @@
 # 🛢 Database (Eloquent ORM)
 
+---
+
 ## 👥 Users
 
 |Name    |Type                       |Properties   |
