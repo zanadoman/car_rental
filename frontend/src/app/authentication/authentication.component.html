@@ -12,22 +12,48 @@
           <form [formGroup]="loginForm" (ngSubmit)="login()">
             <div class="form-floating mb-3">
               <input id="login-form-email"
-                     class="form-control border-0"
+                     class="form-control"
+                     [ngClass]="{
+                       'border-0': loginEmailErrors === undefined,
+                       'is-valid': loginEmailErrors !== undefined &&
+                                   loginEmailErrors.length === 0,
+                       'is-invalid': loginEmailErrors !== undefined &&
+                                     loginEmailErrors.length !== 0
+                     }"
                      type="text"
                      formControlName="email"
                      placeholder="E-mail"
                      autocomplete="email"
               >
               <label for="login-form-email">E-mail</label>
+              <div
+                *ngIf="loginEmailErrors !== undefined &&
+                       loginEmailErrors.length !== 0"
+                class="invalid-feedback">
+                <p class="text-center">{{ loginEmailErrors[0] }}</p>
+              </div>
             </div>
             <div class="form-floating mb-3">
               <input id="login-form-password"
-                     class="form-control border-0"
+                     class="form-control"
+                     [ngClass]="{
+                       'border-0': loginPasswordErrors === undefined,
+                       'is-valid': loginPasswordErrors !== undefined &&
+                                   loginPasswordErrors.length === 0,
+                       'is-invalid': loginPasswordErrors !== undefined &&
+                                     loginPasswordErrors.length !== 0
+                     }"
                      type="password"
                      formControlName="password"
                      placeholder="Password"
               >
               <label for="login-form-password">Password</label>
+              <div
+                *ngIf="loginPasswordErrors !== undefined &&
+                       loginPasswordErrors.length !== 0"
+                class="invalid-feedback">
+                <p class="text-center">{{ loginPasswordErrors[0] }}</p>
+              </div>
             </div>
             <button class="btn btn-primary w-100 mb-5" type="submit"
             >Login</button>
@@ -48,32 +74,71 @@
           <form [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-floating mb-3">
               <input id="register-form-name"
-                     class="form-control border-0"
+                     class="form-control"
+                     [ngClass]="{
+                       'border-0': registerNameErrors === undefined,
+                       'is-valid': registerNameErrors !== undefined &&
+                                   registerNameErrors.length === 0,
+                       'is-invalid': registerNameErrors !== undefined &&
+                                     registerNameErrors.length !== 0
+                     }"
                      type="text"
                      formControlName="name"
                      placeholder="Name"
                      autocomplete="username"
               >
               <label for="register-form-name">Name</label>
+              <div
+                *ngIf="registerNameErrors !== undefined &&
+                       registerNameErrors.length !== 0"
+                class="invalid-feedback">
+                <p class="text-center">{{ registerNameErrors[0] }}</p>
+              </div>
             </div>
             <div class="form-floating mb-3">
               <input id="register-form-email"
-                     class="form-control border-0"
+                     class="form-control"
+                     [ngClass]="{
+                       'border-0': registerEmailErrors === undefined,
+                       'is-valid': registerEmailErrors !== undefined &&
+                                   registerEmailErrors.length === 0,
+                       'is-invalid': registerEmailErrors !== undefined &&
+                                     registerEmailErrors.length !== 0
+                     }"
                      type="text"
                      formControlName="email"
                      placeholder="E-mail"
                      autocomplete="email"
               >
               <label for="register-form-email">E-mail</label>
+              <div
+                *ngIf="registerEmailErrors !== undefined &&
+                       registerEmailErrors.length !== 0"
+                class="invalid-feedback">
+                <p class="text-center">{{ registerEmailErrors[0] }}</p>
+              </div>
             </div>
             <div class="form-floating mb-3">
               <input id="register-form-password"
-                     class="form-control border-0"
+                     class="form-control"
+                     [ngClass]="{
+                       'border-0': registerPasswordErrors === undefined,
+                       'is-valid': registerPasswordErrors !== undefined &&
+                                   registerPasswordErrors.length === 0,
+                       'is-invalid': registerPasswordErrors !== undefined &&
+                                     registerPasswordErrors.length !== 0
+                     }"
                      type="password"
                      formControlName="password"
                      placeholder="Password"
               >
               <label for="register-form-password">Password</label>
+              <div
+                *ngIf="registerPasswordErrors !== undefined &&
+                       registerPasswordErrors.length !== 0"
+                class="invalid-feedback">
+                <p class="text-center">{{ registerPasswordErrors[0] }}</p>
+              </div>
             </div>
             <button class="btn btn-primary w-100 mb-5" type="submit"
             >Register</button>

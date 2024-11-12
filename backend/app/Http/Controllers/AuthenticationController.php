@@ -14,9 +14,9 @@ class AuthenticationController extends Controller
     public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->json()->all(), [
-            'name' => 'string|max:255|required',
-            'email' => 'string|max:255|email|unique:users|required',
-            'password' => 'string|min:8|required',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:255|email|unique:users',
+            'password' => 'required|string|min:8',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -31,15 +31,15 @@ class AuthenticationController extends Controller
             'id' => Auth::user()->id,
             'name' => Auth::user()->name,
             'email' => Auth::user()->email,
-            'role' => Auth::user()->role
+            'role' => Auth::user()->role,
         ], 201);
     }
 
     public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->json()->all(), [
-            'email' => 'string|required',
-            'password' => 'string|required',
+            'email' => 'required|string',
+            'password' => 'required|string',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -53,7 +53,7 @@ class AuthenticationController extends Controller
                 'id' => Auth::user()->id,
                 'name' => Auth::user()->name,
                 'email' => Auth::user()->email,
-                'role' => Auth::user()->role
+                'role' => Auth::user()->role,
             ], 200);
         }
         return response()->json(['error' => 'Invalid credentials.'], 401);
