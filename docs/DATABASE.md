@@ -2,13 +2,14 @@
 
 ## 👥 Users
 
-|Name    |Type                       |Properties|
-|:------:|:-------------------------:|:--------:|
-|id      |id()                       |          |
-|name    |string('name')             |          |
-|email   |string('email')            |unique()  |
-|password|string('password')         |          |
-|role    |unsignedTinyInteger('role')|default(1)|
+|Name    |Type                       |Properties   |
+|:------:|:-------------------------:|:-----------:|
+|id      |id()                       |             |
+|name    |string('name')             |             |
+|email   |string('email')            |unique()     |
+|password|string('password')         |             |
+|role    |unsignedTinyInteger('role')|default(1)   |
+|active  |boolean('active')          |default(true)|
 
 ---
 

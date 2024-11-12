@@ -33,11 +33,11 @@ class AuthenticationController extends Controller
     public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->json()->all(), [
-            'name' => 'string|required',
             'email' => 'string|required',
+            'password' => 'string|required',
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->error(), 400);
+            return response()->json($validator->errors(), 400);
         }
         if (Auth::attempt($request->json()->all())) {
             return response()->json(['success' => 'Successful login.'], 200);
