@@ -8,7 +8,7 @@
         <div class="carousel-item p-5 active">
           <h2 class="mb-5 fw-bold text-center">LOGIN</h2>
           <p class="mb-4 text-muted text-center"
-          >Please enter your name and password!</p>
+          >Please enter your e-mail and password!</p>
           <form [formGroup]="loginForm" (ngSubmit)="login()">
             <div class="form-floating mb-3">
               <input id="login-form-email"
@@ -70,7 +70,7 @@
         <div class="carousel-item p-5">
           <h2 class="mb-5 fw-bold text-center">REGISTER</h2>
           <p class="mb-4 text-muted text-center"
-          >Please enter a name and password!</p>
+          >Please enter a name, e-mail and password!</p>
           <form [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-floating mb-3">
               <input id="register-form-name"
@@ -85,7 +85,7 @@
                      type="text"
                      formControlName="name"
                      placeholder="Name"
-                     autocomplete="username"
+                     autocomplete="name"
               >
               <label for="register-form-name">Name</label>
               <div

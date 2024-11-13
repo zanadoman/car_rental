@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../environment/environment';
+import { User } from '../shared/user.model';
 
 @Component({
   selector: 'app-authentication',
@@ -35,11 +36,18 @@ export class AuthenticationComponent {
   login() {
     console.log('request started')
     console.log(this.loginForm.value)
-    this.httpClient.post(environment.apiUrl + '/login', this.loginForm.value)
+    this.httpClient.post<User>(
+      environment.apiUrl + '/login',
+      this.loginForm.value,
+      { withCredentials: true },
+    )
       .subscribe({
         next: (user) => {
           console.log(user)
-          sessionStorage.setItem('user', JSON.stringify(user))
+          sessionStorage.setItem('userId', user.id.toString())
+          sessionStorage.setItem('userName', user.name)
+          sessionStorage.setItem('userEmail', user.email)
+          sessionStorage.setItem('userRole', user.role.toString())
           this.loginEmailErrors = []
           this.loginPasswordErrors = []
         },
@@ -53,20 +61,25 @@ export class AuthenticationComponent {
             this.loginPasswordErrors = error.error.password || []
           }
         },
-        complete: () => {
-          console.log('request completed')
-        }
+        complete: () => console.log('request completed')
       })
   }
 
   register() {
     console.log('request started')
     console.log(this.registerForm.value)
-    this.httpClient.post(environment.apiUrl + '/register', this.registerForm.value)
+    this.httpClient.post<User>(
+      environment.apiUrl + '/register',
+      this.registerForm.value,
+      { withCredentials: true },
+    )
       .subscribe({
         next: (user) => {
           console.log(user)
-          sessionStorage.setItem('user', JSON.stringify(user))
+          sessionStorage.setItem('userId', user.id.toString())
+          sessionStorage.setItem('userName', user.name)
+          sessionStorage.setItem('userEmail', user.email)
+          sessionStorage.setItem('userRole', user.role.toString())
           this.registerNameErrors = []
           this.registerEmailErrors = []
           this.registerPasswordErrors = []
@@ -83,9 +96,7 @@ export class AuthenticationComponent {
             this.registerPasswordErrors = error.error.password || []
           }
         },
-        complete: () => {
-          console.log('request completed')
-        }
+        complete: () => console.log('request completed')
       })
   }
 }

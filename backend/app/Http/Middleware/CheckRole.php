@@ -16,7 +16,7 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $roles): Response
     {
-        if (Auth::user() === null) {
+        if (!Auth::check()) {
             return response()->json(['error' => 'Login required.'], 401);
         }
         if (!Auth::user()->active) {
