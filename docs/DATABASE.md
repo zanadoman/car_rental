@@ -1,15 +1,17 @@
 # 🛢 Database (Eloquent ORM)
 
+---
+
 ## 👥 Users
 
-|Name    |Type                       |Properties   |
-|:------:|:-------------------------:|:-----------:|
-|id      |id()                       |             |
-|name    |string('name')             |             |
-|email   |string('email')            |unique()     |
-|password|string('password')         |             |
-|role    |unsignedTinyInteger('role')|default(1)   |
-|active  |boolean('active')          |default(true)|
+|Name    |Type              |Properties         |
+|:------:|:----------------:|:-----------------:|
+|id      |id()              |                   |
+|name    |string('name')    |                   |
+|email   |string('email')   |unique()           |
+|password|string('password')|                   |
+|role    |string('role')    |default('customer')|
+|active  |boolean('active') |default(true)      |
 
 ---
 

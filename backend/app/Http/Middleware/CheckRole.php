@@ -14,19 +14,17 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $roles): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (Auth::user() === null) {
+        if (!Auth::check()) {
             return response()->json(['error' => 'Login required.'], 401);
         }
         if (!Auth::user()->active) {
-            return response()->json(['error' => 'Account suspended'], 401);
+            return response()->json(['error' => 'Account suspended.'], 401);
         }
-        foreach (explode(',', $roles) as $role) {
-            if (Auth::user()->role == $role) {
-                return $next($request);
-            }
+        if (!in_array(Auth::user()->role, $roles)) {
+            return response()->json(['error' => 'Insufficient role.'], 401);
         }
-        return response()->json(['error' => 'Insufficient role.'], 401);
+        return $next($request);
     }
 }
