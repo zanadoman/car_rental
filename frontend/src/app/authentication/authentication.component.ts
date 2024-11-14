@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../environment/environment';
-import { User } from '../shared/user.model';
+import { Router } from '@angular/router';
+import { AuthenticationModel } from './authentication.model';
 
 @Component({
   selector: 'app-authentication',
@@ -13,6 +14,7 @@ import { User } from '../shared/user.model';
   styleUrl: './authentication.component.css'
 })
 export class AuthenticationComponent {
+  private router = inject(Router)
   private httpClient = inject(HttpClient)
   private formBuilder = inject(FormBuilder)
 
@@ -36,10 +38,10 @@ export class AuthenticationComponent {
   login() {
     console.log('request started')
     console.log(this.loginForm.value)
-    this.httpClient.post<User>(
+    this.httpClient.post<AuthenticationModel>(
       environment.apiUrl + '/login',
       this.loginForm.value,
-      { withCredentials: true },
+      { withCredentials: true }
     )
       .subscribe({
         next: (user) => {
@@ -50,6 +52,7 @@ export class AuthenticationComponent {
           sessionStorage.setItem('userRole', user.role.toString())
           this.loginEmailErrors = []
           this.loginPasswordErrors = []
+          this.router.navigate(['cars'])
         },
         error: (error) => {
           console.log(error.error)
@@ -68,10 +71,10 @@ export class AuthenticationComponent {
   register() {
     console.log('request started')
     console.log(this.registerForm.value)
-    this.httpClient.post<User>(
+    this.httpClient.post<AuthenticationModel>(
       environment.apiUrl + '/register',
       this.registerForm.value,
-      { withCredentials: true },
+      { withCredentials: true }
     )
       .subscribe({
         next: (user) => {
@@ -83,6 +86,7 @@ export class AuthenticationComponent {
           this.registerNameErrors = []
           this.registerEmailErrors = []
           this.registerPasswordErrors = []
+          this.router.navigate(['cars'])
         },
         error: (error) => {
           console.log(error.error)

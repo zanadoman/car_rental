@@ -20,10 +20,10 @@ Follow these steps to host the backend:
 ```
 cd car_rental/backend
 composer install
-mariadb -u root -p -e "CREATE DATABASE carrental;"
 cp .env.example .env
 php artisan key:generate
-php artisan migrate:fresh
+mariadb -u root -p -e "CREATE DATABASE carrental;"
+php artisan migrate:fresh --seed
 php artisan serve
 ```
 
