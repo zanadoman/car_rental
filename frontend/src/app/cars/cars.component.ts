@@ -12,7 +12,8 @@ export class CarsComponent {
   private router = inject(Router)
 
   constructor() {
-    if (['1', '2', '3', '4'].includes(sessionStorage.getItem('userRole') || '0')) {
+    if (!['customer', 'mechanic', 'salesman', 'admin']
+      .includes(sessionStorage.getItem('userRole') || 'visitor')) {
       this.router.navigate([''])
     }
   }

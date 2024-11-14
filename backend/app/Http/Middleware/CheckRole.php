@@ -14,7 +14,7 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, int ...$roles): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         if (!Auth::check()) {
             return response()->json(['error' => 'Login required.'], 401);

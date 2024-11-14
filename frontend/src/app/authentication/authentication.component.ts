@@ -49,7 +49,7 @@ export class AuthenticationComponent {
           sessionStorage.setItem('userId', user.id.toString())
           sessionStorage.setItem('userName', user.name)
           sessionStorage.setItem('userEmail', user.email)
-          sessionStorage.setItem('userRole', user.role.toString())
+          sessionStorage.setItem('userRole', user.role)
           this.loginEmailErrors = []
           this.loginPasswordErrors = []
           this.router.navigate(['cars'])
@@ -82,7 +82,7 @@ export class AuthenticationComponent {
           sessionStorage.setItem('userId', user.id.toString())
           sessionStorage.setItem('userName', user.name)
           sessionStorage.setItem('userEmail', user.email)
-          sessionStorage.setItem('userRole', user.role.toString())
+          sessionStorage.setItem('userRole', user.role)
           this.registerNameErrors = []
           this.registerEmailErrors = []
           this.registerPasswordErrors = []

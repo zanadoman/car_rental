@@ -16,25 +16,25 @@ class UsersTableSeeder extends Seeder
             'name' => 'Customer',
             'email' => 'customer@carrental.com',
             'password' => 'password',
-            'role' => 1,
+            'role' => 'customer',
         ]);
         User::create([
             'name' => 'Mechanic',
             'email' => 'mechanic@carrental.com',
             'password' => 'password',
-            'role' => 2,
+            'role' => 'mechanic',
         ]);
         User::create([
             'name' => 'Salesman',
             'email' => 'salesman@carrental.com',
             'password' => 'password',
-            'role' => 3,
+            'role' => 'salesman',
         ]);
         User::create([
             'name' => 'Admin',
             'email' => 'admin@carrental.com',
             'password' => 'password',
-            'role' => 4,
+            'role' => 'admin',
         ]);
     }
 }

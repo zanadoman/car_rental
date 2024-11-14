@@ -9,6 +9,6 @@ Route::get('/status', function () {
     return view('welcome');
 });
 
-Route::middleware(['role:1,2,3,4'])->group(function () {
+Route::middleware(['role:customer,mechanic,salesman,admin'])->group(function () {
     Route::post('/logout', [AuthenticationController::class, 'logout']);
 });
