@@ -22,7 +22,7 @@ class CheckRole
         if (!Auth::user()->active) {
             return response()->json(['error' => 'Account suspended.'], 401);
         }
-        if (!in_array(Auth::user()->role, $roles)) {
+        if (!in_array(Auth::user()->role, $roles, true)) {
             return response()->json(['error' => 'Insufficient role.'], 401);
         }
         return $next($request);
