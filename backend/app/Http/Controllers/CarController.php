@@ -45,7 +45,7 @@ class CarController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        if ($request->json()->next_maintenance <= $request->json()->last_maintenance) {
+        if ($request->json()->get('next_maintenance') <= $request->json()->get('last_maintenance')) {
             return response()->json([
                 'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
             ], 422);
@@ -79,12 +79,12 @@ class CarController extends Controller
             return response()->json(['error' => 'Car not found.', 404]);
         }
         $car->last_maintenance = $car->kilometers;
-        if ($request->json()->next_maintenance <= $car->last_maintenance) {
+        if ($request->json()->get('next_maintenance') <= $car->last_maintenance) {
             return response()->json([
                 'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
             ], 422);
         }
-        $car->next_maintenance = $request->json()->next_maintenance;
+        $car->next_maintenance = $request->json()->get('next_maintenance');
         try {
             $car->save();
         } catch (Exception) {
@@ -115,7 +115,7 @@ class CarController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        if ($request->json()->next_maintenance <= $request->json()->last_maintenance) {
+        if ($request->json()->get('next_maintenance') <= $request->json()->get('last_maintenance')) {
             return response()->json([
                 'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
             ], 422);
