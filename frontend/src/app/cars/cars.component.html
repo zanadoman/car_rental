@@ -1,1 +1,31 @@
-<p>cars works!</p>
+<div class="row bg-body-secondary rounded-3 shadow justify-content-center">
+<div class="col-10 col-lg-8 row my-2 my-md-5">
+  <div class="col">
+    <select class="form-select shadow" (change)="selectCars($event)">
+      <option value="all" selected>Category: All</option>
+      <option *ngFor="let category of categories" value="{{ category }}"
+      >Category: {{ category }}</option>
+    </select>
+  </div>
+  <div class="col">
+    <select class="form-select shadow" (change)="sortCars($event)">
+      <option value="license" selected>Sort by: License</option>
+      <option value="brand">Sort by: Brand</option>
+      <option value="dailyfee">Sort by: Daily fee</option>
+    </select>
+  </div>
+</div>
+<div *ngFor="let car of cars"
+     class="col-10 col-lg-8 row mb-2 mb-md-5 bg-body rounded-3 shadow"
+>
+  <ul>
+    <li><p>License: {{ car.license }}</p></li>
+    <li><p>Brand: {{ car.brand }}</p></li>
+    <li><p>Category: {{ car.category }}</p></li>
+    <li><p>Kilometers: {{ car.kilometers }}km</p></li>
+    <li><p>Daily fee: {{ car.dailyfee }}$</p></li>
+    <li><p>Last maintenance: {{ car.last_maintenance }}km</p></li>
+    <li><p>Next maintenance: {{ car.next_maintenance }}km</p></li>
+  </ul>
+</div>
+<div>

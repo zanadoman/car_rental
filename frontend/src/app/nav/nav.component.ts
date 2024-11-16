@@ -29,15 +29,13 @@ export class NavComponent {
       environment.apiUrl + '/logout',
       null,
       { withCredentials: true }
-    )
-      .subscribe({
-        next: (response) => {
-          console.log(response)
-          sessionStorage.clear()
-          this.router.navigate([''])
-        },
-        error: (error) => console.log(error.error),
-        complete: () => console.log('request completed')
-      })
+    ).subscribe({
+      error: error => console.log(error.error),
+      complete: () => {
+        sessionStorage.clear()
+        console.log('request completed')
+        this.router.navigate([''])
+      }
+    })
   }
 }
