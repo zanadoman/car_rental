@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AuthenticationController extends Controller
 {
@@ -59,11 +60,11 @@ class AuthenticationController extends Controller
         return response()->json(['error' => 'Invalid credentials.'], 401);
     }
 
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request): Response
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return response()->json(['success' => 'Successful logout.'], 200);
+        return response()->noContent();
     }
 }
