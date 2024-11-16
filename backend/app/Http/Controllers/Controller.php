@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 
-abstract class Controller
+class Controller
 {
-    public function index(): View
+    public function status(): View
     {
         return view('welcome');
     }
