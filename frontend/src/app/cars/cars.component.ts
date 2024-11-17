@@ -151,9 +151,7 @@ export class CarsComponent {
   }
 
   filterCategories() {
-    this.filteredCategories = Array.from(
-      new Set(this.cars.map(car => car.category))
-    ).sort()
+    this.filteredCategories = Array.from(new Set(this.cars.map(car => car.category))).sort()
     console.log('categories filtered')
     console.log(this.filteredCategories)
   }
@@ -192,5 +190,7 @@ export class CarsComponent {
         })
       ]
     }))
+    console.log('forms filtered')
+    console.log(this.filteredForms)
   }
 }

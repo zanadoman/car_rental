@@ -48,7 +48,7 @@ class CarController extends Controller
         if ($request->json()->get('next_maintenance') <= $request->json()->get('last_maintenance')) {
             return response()->json([
                 'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
-            ], 422);
+            ], 400);
         }
         try {
             $car = Car::create($request->json()->all());
@@ -82,7 +82,7 @@ class CarController extends Controller
         if ($request->json()->get('next_maintenance') <= $car->last_maintenance) {
             return response()->json([
                 'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
-            ], 422);
+            ], 400);
         }
         $car->next_maintenance = $request->json()->get('next_maintenance');
         try {
@@ -118,7 +118,7 @@ class CarController extends Controller
         if ($request->json()->get('next_maintenance') <= $request->json()->get('last_maintenance')) {
             return response()->json([
                 'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
-            ], 422);
+            ], 400);
         }
         $car = Car::find($id);
         if ($car === null) {

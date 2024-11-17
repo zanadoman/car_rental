@@ -12,9 +12,9 @@ import { NgClass, NgIf } from '@angular/common';
   styleUrl: './nav.component.css'
 })
 export class NavComponent {
-  router = inject(Router)
   private httpClient = inject(HttpClient)
 
+  router = inject(Router)
   userName: string | null = null
 
   ngOnInit() {
@@ -26,14 +26,15 @@ export class NavComponent {
   logout() {
     console.log('request started')
     this.httpClient.post(
-      environment.apiUrl + '/logout',
+      `${environment.apiUrl}/logout`,
       null,
       { withCredentials: true }
     ).subscribe({
+      next: response => console.log(response),
       error: error => console.log(error.error),
       complete: () => {
-        sessionStorage.clear()
         console.log('request completed')
+        sessionStorage.clear()
         this.router.navigate([''])
       }
     })

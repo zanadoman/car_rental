@@ -23,7 +23,6 @@
 |license         |string('license')                  |unique()  |
 |brand           |string('brand')                    |          |
 |category        |string('category')                 |          |
-|picture         |string('picture')                  |          |
 |kilometers      |unsignedInteger('kilometers')      |          |
 |dailyfee        |unsignedInteger('dailyfee')        |          |
 |last_maintenance|unsignedInteger('last_maintenance')|          |

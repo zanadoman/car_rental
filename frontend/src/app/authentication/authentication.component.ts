@@ -39,11 +39,12 @@ export class AuthenticationComponent {
     console.log('request started')
     console.log(this.loginForm.value)
     this.httpClient.post<AuthenticationModel>(
-      environment.apiUrl + '/login',
+      `${environment.apiUrl}/login`,
       this.loginForm.value,
       { withCredentials: true }
     ).subscribe({
       next: user => {
+        console.log(user)
         sessionStorage.setItem('userId', user.id.toString())
         sessionStorage.setItem('userName', user.name)
         sessionStorage.setItem('userEmail', user.email)
@@ -53,6 +54,7 @@ export class AuthenticationComponent {
         this.router.navigate(['cars'])
       },
       error: error => {
+        console.log(error.error)
         if (error.error.error !== undefined) {
           this.loginEmailErrors = [error.error.error]
           this.loginPasswordErrors = [error.error.error]
@@ -60,17 +62,8 @@ export class AuthenticationComponent {
           this.loginEmailErrors = error.error.email || []
           this.loginPasswordErrors = error.error.password || []
         }
-        console.log(error.error)
       },
-      complete: () => {
-        console.log('request completed')
-        console.log({
-          id: sessionStorage.getItem('userId'),
-          name: sessionStorage.getItem('userName'),
-          email: sessionStorage.getItem('userEmail'),
-          role: sessionStorage.getItem('userRole')
-        })
-      }
+      complete: () => console.log('request completed')
     })
   }
 
@@ -78,11 +71,12 @@ export class AuthenticationComponent {
     console.log('request started')
     console.log(this.registerForm.value)
     this.httpClient.post<AuthenticationModel>(
-      environment.apiUrl + '/register',
+      `${environment.apiUrl}/register`,
       this.registerForm.value,
       { withCredentials: true }
     ).subscribe({
       next: user => {
+        console.log(user)
         sessionStorage.setItem('userId', user.id.toString())
         sessionStorage.setItem('userName', user.name)
         sessionStorage.setItem('userEmail', user.email)
@@ -93,6 +87,7 @@ export class AuthenticationComponent {
         this.router.navigate(['cars'])
       },
       error: error => {
+        console.log(error.error)
         if (error.error.error !== undefined) {
           this.registerNameErrors = [error.error.error]
           this.registerEmailErrors = [error.error.error]
@@ -102,17 +97,8 @@ export class AuthenticationComponent {
           this.registerEmailErrors = error.error.email || []
           this.registerPasswordErrors = error.error.password || []
         }
-        console.log(error.error)
       },
-      complete: () => {
-        console.log('request completed')
-        console.log({
-          id: sessionStorage.getItem('userId'),
-          name: sessionStorage.getItem('userName'),
-          email: sessionStorage.getItem('userEmail'),
-          role: sessionStorage.getItem('userRole')
-        })
-      }
+      complete: () => console.log('request completed')
     })
   }
 }
