@@ -39,68 +39,66 @@ export class AuthenticationComponent {
     console.log('request started')
     console.log(this.loginForm.value)
     this.httpClient.post<AuthenticationModel>(
-      environment.apiUrl + '/login',
+      `${environment.apiUrl}/login`,
       this.loginForm.value,
       { withCredentials: true }
-    )
-      .subscribe({
-        next: (user) => {
-          console.log(user)
-          sessionStorage.setItem('userId', user.id.toString())
-          sessionStorage.setItem('userName', user.name)
-          sessionStorage.setItem('userEmail', user.email)
-          sessionStorage.setItem('userRole', user.role)
-          this.loginEmailErrors = []
-          this.loginPasswordErrors = []
-          this.router.navigate(['cars'])
-        },
-        error: (error) => {
-          console.log(error.error)
-          if (error.error.error !== undefined) {
-            this.loginEmailErrors = [error.error.error]
-            this.loginPasswordErrors = [error.error.error]
-          } else {
-            this.loginEmailErrors = error.error.email || []
-            this.loginPasswordErrors = error.error.password || []
-          }
-        },
-        complete: () => console.log('request completed')
-      })
+    ).subscribe({
+      next: user => {
+        console.log(user)
+        sessionStorage.setItem('userId', user.id.toString())
+        sessionStorage.setItem('userName', user.name)
+        sessionStorage.setItem('userEmail', user.email)
+        sessionStorage.setItem('userRole', user.role)
+        this.loginEmailErrors = []
+        this.loginPasswordErrors = []
+        this.router.navigate(['cars'])
+      },
+      error: error => {
+        console.log(error.error)
+        if (error.error.error !== undefined) {
+          this.loginEmailErrors = [error.error.error]
+          this.loginPasswordErrors = [error.error.error]
+        } else {
+          this.loginEmailErrors = error.error.email || []
+          this.loginPasswordErrors = error.error.password || []
+        }
+      },
+      complete: () => console.log('request completed')
+    })
   }
 
   register() {
     console.log('request started')
     console.log(this.registerForm.value)
     this.httpClient.post<AuthenticationModel>(
-      environment.apiUrl + '/register',
+      `${environment.apiUrl}/register`,
       this.registerForm.value,
       { withCredentials: true }
-    )
-      .subscribe({
-        next: (user) => {
-          console.log(user)
-          sessionStorage.setItem('userId', user.id.toString())
-          sessionStorage.setItem('userName', user.name)
-          sessionStorage.setItem('userEmail', user.email)
-          sessionStorage.setItem('userRole', user.role)
-          this.registerNameErrors = []
-          this.registerEmailErrors = []
-          this.registerPasswordErrors = []
-          this.router.navigate(['cars'])
-        },
-        error: (error) => {
-          console.log(error.error)
-          if (error.error.error !== undefined) {
-            this.registerNameErrors = [error.error.error]
-            this.registerEmailErrors = [error.error.error]
-            this.registerPasswordErrors = [error.error.error]
-          } else {
-            this.registerNameErrors = error.error.name || []
-            this.registerEmailErrors = error.error.email || []
-            this.registerPasswordErrors = error.error.password || []
-          }
-        },
-        complete: () => console.log('request completed')
-      })
+    ).subscribe({
+      next: user => {
+        console.log(user)
+        sessionStorage.setItem('userId', user.id.toString())
+        sessionStorage.setItem('userName', user.name)
+        sessionStorage.setItem('userEmail', user.email)
+        sessionStorage.setItem('userRole', user.role)
+        this.registerNameErrors = []
+        this.registerEmailErrors = []
+        this.registerPasswordErrors = []
+        this.router.navigate(['cars'])
+      },
+      error: error => {
+        console.log(error.error)
+        if (error.error.error !== undefined) {
+          this.registerNameErrors = [error.error.error]
+          this.registerEmailErrors = [error.error.error]
+          this.registerPasswordErrors = [error.error.error]
+        } else {
+          this.registerNameErrors = error.error.name || []
+          this.registerEmailErrors = error.error.email || []
+          this.registerPasswordErrors = error.error.password || []
+        }
+      },
+      complete: () => console.log('request completed')
+    })
   }
 }

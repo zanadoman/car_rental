@@ -1,1 +1,255 @@
-<p>cars works!</p>
+<div class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center">
+  <div *ngIf="userRole === 'admin'"
+       class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow"
+  >
+    <h3 class="mb-4 fw-bold text-center">Register Car</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="registerCar()">
+      <div class="form-floating mb-3">
+        <input id="register-form-license"
+               class="form-control"
+               type="text"
+               formControlName="license"
+               placeholder="License"
+        >
+        <label for="register-form-license">License</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-brand"
+               class="form-control"
+               type="text"
+               formControlName="brand"
+               placeholder="Brand"
+        >
+        <label for="register-form-brand">Brand</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-category"
+               class="form-control"
+               type="text"
+               formControlName="category"
+               placeholder="Category"
+        >
+        <label for="register-form-category">Category</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-kilometers"
+               class="form-control"
+               type="number"
+               formControlName="kilometers"
+               placeholder="Kilometers"
+        >
+        <label for="register-form-kilometers">Kilometers</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-dailyfee"
+               class="form-control"
+               type="number"
+               formControlName="dailyfee"
+               placeholder="Daily fee ($)"
+        >
+        <label for="register-form-dailyfee">Daily fee ($)</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-last-maintenance"
+               class="form-control"
+               type="number"
+               formControlName="last_maintenance"
+               placeholder="Last maintenance (km)"
+        >
+        <label for="register-form-last-maintenance"
+        >Last maintenance (km)</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-next-maintenance"
+               class="form-control"
+               type="number"
+               formControlName="next_maintenance"
+               placeholder="Next maintenance (km)"
+        >
+        <label for="register-form-next-maintenance"
+        >Next maintenance (km)</label>
+      </div>
+      <button class="btn btn-primary w-100" type="submit">Register</button>
+    </form>
+  </div>
+  <div class="col-11 col-lg-8 row mb-3 mb-md-5">
+    <div class="col">
+      <select class="form-select shadow"
+              name="category"
+              (change)="selectCars($event)"
+      >
+        <option value="all" selected>Category: All</option>
+        <option *ngFor="let category of filteredCategories"
+                value="{{ category }}"
+        >Category: {{ category }}</option>
+      </select>
+    </div>
+    <div class="col">
+      <select class="form-select shadow"
+              name="sort"
+              (change)="sortCars($event)"
+      >
+        <option value="license" selected>Sort by: License</option>
+        <option value="brand">Sort by: Brand</option>
+        <option value="dailyfee">Sort by: Daily fee</option>
+      </select>
+    </div>
+  </div>
+  <div *ngFor="let car of filteredCars"
+       class="col-11 col-lg-8 row mb-3 mb-md-5 p-5 bg-body rounded-3 shadow justify-content-center"
+  >
+    <ng-container *ngIf="userRole !== 'admin'">
+      <div class="col-12 col-md-6 px-3">
+        <h5 class="mb-4 fw-bold text-center">{{ car.brand }}</h5>
+        <ul class="overflow-hidden">
+          <li>
+            <p class="text-nowrap mb-3">License: {{ car.license }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Category: {{ car.category }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Kilometers: {{ car.kilometers }}km</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Daily fee: {{ car.dailyfee }}$</p>
+          </li>
+          <ng-container *ngIf="userRole !== 'customer'">
+            <li>
+              <p class="text-nowrap mb-3"
+              >Last maintenance: {{ car.last_maintenance }}km</p>
+            </li>
+            <li>
+              <p class="text-nowrap mb-0"
+              >Next maintenance: {{ car.next_maintenance }}km</p>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+      <div *ngIf="userRole !== 'salesman'" class="col-12 col-md-6 px-0">
+        <ng-container *ngIf="userRole === 'customer'">
+          <h5 class="mb-4 fw-bold text-center">Submit Rent</h5>
+          <form>
+            <div class="form-floating mb-3">
+              <input id="rent-form-begin-{{ car.id }}"
+                     class="form-control"
+                     type="date"
+                     name="begin"
+                     value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                     min="{{ currentDate | date:'yyyy-MM-dd' }}"
+              >
+              <label for="rent-form-begin-{{ car.id }}">Begin</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input id="rent-form-end-{{ car.id }}"
+                     class="form-control"
+                     type="date"
+                     name="end"
+                     value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                     min="{{ currentDate | date:'yyyy-MM-dd' }}"
+              >
+              <label for="rent-form-end-{{ car.id }}">End</label>
+            </div>
+            <button class="btn btn-primary w-100" type="submit">Rent</button>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="userRole === 'mechanic'">
+          <h5 class="mb-4 fw-bold text-center">Submit Repair</h5>
+          <form *ngIf="filteredForms.has(car.id)"
+                [formGroup]="filteredForms.get(car.id)!"
+                (ngSubmit)="repairCar(car.id)"
+          >
+            <div class="form-floating mb-3">
+              <input id="repair-form-next-maintenance-{{ car.id }}"
+                     class="form-control"
+                     type="number"
+                     formControlName="next_maintenance"
+                     placeholder="Next maintenance (km)"
+              >
+              <label for="repair-form-next-maintenance-{{ car.id }}"
+              >Next maintenance (km)</label>
+            </div>
+            <button class="btn btn-primary w-100"
+                    type="submit"
+            >Repair</button>
+          </form>
+        </ng-container>
+      </div>
+    </ng-container>
+    <form *ngIf="userRole === 'admin' && filteredForms.has(car.id)"
+          [formGroup]="filteredForms.get(car.id)!"
+          (ngSubmit)="updateCar(car.id)"
+    >
+      <div class="form-floating mb-3">
+        <input id="update-form-license-{{ car.id }}"
+               class="form-control"
+               type="text"
+               formControlName="license"
+               placeholder="License"
+        >
+        <label for="update-form-license-{{ car.id }}">License</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-brand-{{ car.id }}"
+               class="form-control"
+               type="text"
+               formControlName="brand"
+               placeholder="Brand"
+        >
+        <label for="update-form-brand-{{ car.id }}">Brand</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-category-{{ car.id }}"
+               class="form-control"
+               type="text"
+               formControlName="category"
+               placeholder="Category"
+        >
+        <label for="update-form-category-{{ car.id }}">Category</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-kilometers-{{ car.id }}"
+               class="form-control"
+               type="number"
+               formControlName="kilometers"
+               placeholder="Kilometers"
+        >
+        <label for="update-form-kilometers-{{ car.id }}">Kilometers</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-dailyfee-{{ car.id }}"
+               class="form-control"
+               type="number"
+               formControlName="dailyfee"
+               placeholder="Daily fee ($)"
+        >
+        <label for="update-form-dailyfee-{{ car.id }}">Daily fee ($)</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-last-maintenance-{{ car.id }}"
+               class="form-control"
+               type="number"
+               formControlName="last_maintenance"
+               placeholder="Last maintenance (km)"
+        >
+        <label for="update-form-last-maintenance-{{ car.id }}"
+        >Last maintenance (km)</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-next-maintenance-{{ car.id }}"
+               class="form-control"
+               type="number"
+               formControlName="next_maintenance"
+               placeholder="Next maintenance (km)"
+        >
+        <label for="update-form-next-maintenance-{{ car.id }}"
+        >Next maintenance (km)</label>
+      </div>
+      <button class="btn btn-primary w-100 mb-3" type="submit">Update</button>
+      <button class="btn btn-danger w-100"
+              type="button"
+              (click)="deleteCar(car.id)"
+      >Delete</button>
+    </form>
+  </div>
+</div>

@@ -1,6 +1,16 @@
 <nav class="navbar sticky-top mb-1 mb-md-5 bg-body-secondary shadow">
   <div class="container-fluid">
-    <a class="navbar-brand">Car Rental</a>
+    <div class="d-flex">
+      <a class="navbar-brand">Car Rental</a>
+      <ul class="navbar-nav">
+        <li *ngIf="userName !== null" class="nav-item">
+          <a class="nav-link"
+             [ngClass]="{ 'active': router.url === '/cars' }"
+             routerLink="/cars"
+          >Cars</a>
+        </li>
+      </ul>
+    </div>
     <div *ngIf="userName !== null" class="d-flex align-items-center">
       <span class="navbar-text me-2">{{ userName }}</span>
       <button class="btn btn-sm btn-primary" (click)="logout()">Logout</button>
