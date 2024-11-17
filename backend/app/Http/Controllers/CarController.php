@@ -104,7 +104,7 @@ class CarController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $validator = Validator::make($request->json()->all(), [
-            'license' => 'required|string|max:255|unique:cars',
+            'license' => 'required|string|max:255',
             'brand' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'kilometers' => 'required|integer|min:0',

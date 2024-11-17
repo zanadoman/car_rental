@@ -1,4 +1,5 @@
 export interface Car {
+  id: number
   license: string
   brand: string
   category: string

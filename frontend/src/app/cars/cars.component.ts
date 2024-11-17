@@ -3,28 +3,44 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Car } from './car.model';
 import { environment } from '../../environment/environment';
-import { NgFor } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cars',
   standalone: true,
-  imports: [NgFor],
+  imports: [ReactiveFormsModule, DatePipe, NgIf, NgFor],
   templateUrl: './cars.component.html',
   styleUrl: './cars.component.css'
 })
 export class CarsComponent {
   private router = inject(Router)
   private httpClient = inject(HttpClient)
+  private formBuilder = inject(FormBuilder)
+
+  userRole = 'visitor'
+  currentDate = new Date
+
+  registerForm = this.formBuilder.group({
+    license: '',
+    brand: '',
+    category: '',
+    kilometers: 0,
+    dailyfee: 0,
+    last_maintenance: 0,
+    next_maintenance: 0
+  })
 
   cars: Car[] = []
   selectedCategory = 'all'
   sortedField = 'license'
   filteredCategories: string[] = []
   filteredCars: Car[] = []
+  filteredForms = new Map<number, FormGroup>
 
   constructor() {
-    if (!['customer', 'mechanic', 'salesman', 'admin']
-      .includes(sessionStorage.getItem('userRole') || 'visitor')) {
+    this.userRole = sessionStorage.getItem('userRole') || 'visitor'
+    if (!['customer', 'mechanic', 'salesman', 'admin'].includes(this.userRole)) {
       this.router.navigate([''])
     }
   }
@@ -36,16 +52,88 @@ export class CarsComponent {
   getCars() {
     console.log('request started')
     this.httpClient.get<Car[]>(
-      environment.apiUrl + '/cars',
+      `${environment.apiUrl}/cars`,
       { withCredentials: true }
     ).subscribe({
-      next: cars => this.cars = cars,
+      next: cars => {
+        console.log(cars)
+        this.cars = cars
+      },
       error: error => console.log(error.error),
       complete: () => {
         console.log('request completed')
-        console.log(this.cars)
         this.filterCategories()
         this.filterCars()
+        this.filterForms()
+      }
+    })
+  }
+
+  registerCar() {
+    console.log('request started')
+    console.log(this.registerForm.value)
+    this.httpClient.post(
+      `${environment.apiUrl}/cars`,
+      this.registerForm.value,
+      { withCredentials: true }
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error.error),
+      complete: () => {
+        console.log('request completed')
+        this.getCars()
+      }
+    })
+  }
+
+  repairCar(id: number) {
+    console.log('request started')
+    console.log(id)
+    console.log(this.filteredForms.get(id)?.value)
+    this.httpClient.patch(
+      `${environment.apiUrl}/car/${id}`,
+      this.filteredForms.get(id)?.value,
+      { withCredentials: true }
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error.error),
+      complete: () => {
+        console.log('request completed')
+        this.getCars()
+      }
+    })
+  }
+
+  updateCar(id: number) {
+    console.log('request started')
+    console.log(id)
+    console.log(this.filteredForms.get(id)?.value)
+    this.httpClient.put(
+      `${environment.apiUrl}/car/${id}`,
+      this.filteredForms.get(id)?.value,
+      { withCredentials: true }
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error.error),
+      complete: () => {
+        console.log('request completed')
+        this.getCars()
+      }
+    })
+  }
+
+  deleteCar(id: number) {
+    console.log('request started')
+    console.log(id)
+    this.httpClient.delete(
+      `${environment.apiUrl}/car/${id}`,
+      { withCredentials: true }
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error.error),
+      complete: () => {
+        console.log('request completed')
+        this.getCars()
       }
     })
   }
@@ -72,8 +160,7 @@ export class CarsComponent {
 
   filterCars() {
     this.filteredCars = this.cars.filter(car => {
-      return this.selectedCategory === 'all' ||
-        car.category === this.selectedCategory
+      return this.selectedCategory === 'all' || car.category === this.selectedCategory
     }).sort((car1, car2) => {
       switch (this.sortedField) {
         case 'license':
@@ -88,5 +175,22 @@ export class CarsComponent {
     })
     console.log('cars filtered')
     console.log(this.filteredCars)
+  }
+
+  filterForms() {
+    this.filteredForms = new Map(this.filteredCars.map(car => {
+      return [
+        car.id,
+        this.formBuilder.group({
+          license: car.license,
+          brand: car.brand,
+          category: car.category,
+          kilometers: car.kilometers,
+          dailyfee: car.dailyfee,
+          last_maintenance: car.last_maintenance,
+          next_maintenance: car.next_maintenance
+        })
+      ]
+    }))
   }
 }
