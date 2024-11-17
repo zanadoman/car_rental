@@ -3,7 +3,7 @@
   <div class="col">
     <select class="form-select shadow" (change)="selectCars($event)">
       <option value="all" selected>Category: All</option>
-      <option *ngFor="let category of categories" value="{{ category }}"
+      <option *ngFor="let category of filteredCategories" value="{{ category }}"
       >Category: {{ category }}</option>
     </select>
   </div>
@@ -15,7 +15,7 @@
     </select>
   </div>
 </div>
-<div *ngFor="let car of cars"
+<div *ngFor="let car of filteredCars"
      class="col-10 col-lg-8 row mb-2 mb-md-5 bg-body rounded-3 shadow"
 >
   <ul>

@@ -17,9 +17,10 @@ export class CarsComponent {
   private httpClient = inject(HttpClient)
 
   cars: Car[] = []
-  categories: string[] = []
   selectedCategory = 'all'
   sortedField = 'license'
+  filteredCategories: string[] = []
+  filteredCars: Car[] = []
 
   constructor() {
     if (!['customer', 'mechanic', 'salesman', 'admin']
@@ -37,47 +38,16 @@ export class CarsComponent {
     this.httpClient.get<Car[]>(
       environment.apiUrl + '/cars',
       { withCredentials: true }
-    )
-      .subscribe({
-        next: cars => this.cars = cars,
-        error: error => console.log(error.error),
-        complete: () => {
-          console.log('request completed')
-          console.log(this.cars)
-          this.filterCategories()
-          this.filterCars()
-        }
-      })
-  }
-
-  filterCategories() {
-    this.categories = Array.from(
-      new Set(this.cars.map(car => car.category))
-    ).sort()
-    console.log('categories filtered')
-    console.log(this.categories)
-  }
-
-  filterCars() {
-    if (this.selectedCategory !== 'all') {
-      this.cars = this.cars.filter(car => {
-        return car.category === this.selectedCategory
-      })
-    }
-    this.cars.sort((car1, car2) => {
-      switch (this.sortedField) {
-        case 'license':
-          return car1.license.localeCompare(car2.license)
-        case 'brand':
-          return car1.brand.localeCompare(car2.brand)
-        case 'dailyfee':
-          return car1.dailyfee - car2.dailyfee
-        default:
-          return 0
+    ).subscribe({
+      next: cars => this.cars = cars,
+      error: error => console.log(error.error),
+      complete: () => {
+        console.log('request completed')
+        console.log(this.cars)
+        this.filterCategories()
+        this.filterCars()
       }
     })
-    console.log('cars filtered')
-    console.log(this.cars)
   }
 
   selectCars(event: Event) {
@@ -90,5 +60,33 @@ export class CarsComponent {
     this.sortedField = (event.target as HTMLSelectElement).value
     console.log(`sorted field: ${this.sortedField}`)
     this.getCars();
+  }
+
+  filterCategories() {
+    this.filteredCategories = Array.from(
+      new Set(this.cars.map(car => car.category))
+    ).sort()
+    console.log('categories filtered')
+    console.log(this.filteredCategories)
+  }
+
+  filterCars() {
+    this.filteredCars = this.cars.filter(car => {
+      return this.selectedCategory === 'all' ||
+        car.category === this.selectedCategory
+    }).sort((car1, car2) => {
+      switch (this.sortedField) {
+        case 'license':
+          return car1.license.localeCompare(car2.license)
+        case 'brand':
+          return car1.brand.localeCompare(car2.brand)
+        case 'dailyfee':
+          return car1.dailyfee - car2.dailyfee
+        default:
+          return 0
+      }
+    })
+    console.log('cars filtered')
+    console.log(this.filteredCars)
   }
 }
