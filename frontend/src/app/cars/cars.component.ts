@@ -40,7 +40,7 @@ export class CarsComponent {
 
   constructor() {
     this.userRole = sessionStorage.getItem('userRole') || 'visitor'
-    if (!['customer', 'mechanic', 'salesman', 'admin'].includes(this.userRole)) {
+    if (!['customer', 'salesman', 'admin'].includes(this.userRole)) {
       this.router.navigate([''])
     }
   }
