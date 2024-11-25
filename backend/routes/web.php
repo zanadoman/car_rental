@@ -28,7 +28,7 @@ Route::middleware(['role:mechanic,admin'])->group(function () {
 });
 
 Route::middleware(['role:salesman,admin'])->group(function () {
-    Route::get('/receipts', [ReceiptController::class, 'store']);
+    Route::post('/receipts', [ReceiptController::class, 'store']);
 });
 
 Route::middleware(['role:customer,admin'])->group(function () {
