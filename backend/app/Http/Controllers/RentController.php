@@ -13,14 +13,10 @@ class RentController extends Controller
 {
     public function index(): JsonResponse
     {
-        switch (Auth::user()->role) {
-            case 'customer':
-                $rents = Rent::where('user_id', '=', Auth::user()->id)->get();
-                break;
-            case 'salesman':
-            case 'admin':
-                $rents = Rent::all();
-                break;
+        if (Auth::user()->role === 'customer') {
+            $rents = Rent::where('user_id', '=', Auth::user()->id)->get();
+        } else {
+            $rents = Rent::all();
         }
         return response()->json($rents, 200);
     }
@@ -28,75 +24,102 @@ class RentController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->json()->all(), [
-            // userid,carid,begin,end
             'user_id' => 'required|integer|min:0',
             'car_id' => 'required|integer|min:0',
-            'begin' => 'required|date',
-            'end' => 'required|date',
-            'takeaway' => 'nullable',
-            'return' => 'nullable'
+            'kilometers' => 'required|integer|min:0',
+            'begin' => 'required|date|after:today',
+            'end' => 'required|date|after:begin',
+            'takeaway' => 'nullable|date',
+            'return' => 'nullable|date',
+            'active' => 'required|boolean',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
+        }
+        if ($request->json()->get('return') !== null && $request->json()->get('takeaway') === null) {
+            return response()->json([
+                'takeaway' => ["The takeaway field must not be null if the return field is not null."],
+            ], 400);
         }
         try {
             $rent = Rent::create($request->json()->all());
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.', 500]);
         }
-        return response()->json([
-            'id' => $rent->id,
-            'user_id' => $rent->user_id,
-            'car_id' => $rent->car_id,
-            'kilometers' => $rent->kilometers,
-            'begin' => $rent->date,
-            'end' => $rent->end,
-            'takeaway' => $rent->takeaway,
-            'return' => $rent->return,
-            'active' => $rent->active
-        ], 201);
+        return response()->json($rent, 201);
     }
 
     public function edit(Request $request, int $id): JsonResponse
     {
-        $rent = Rent::find($id);
-        if ($rent === null) {
-            return response()->json(['error' => 'Rent not found.', 404]);
-        }
         $validator = Validator::make($request->json()->all(), [
             'takeaway' => 'nullable|date',
             'return' => 'nullable|date',
-            'active' => 'nullable|boolean',
+            'active' => 'boolean',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+        $rent = Rent::find($id);
+        if ($rent === null) {
+            return response()->json(['error' => 'Rent not found.', 404]);
+        }
+        switch (Auth::user()->role) {
+            case 'customer':
+                if ($rent->takeaway === null) {
+                    $rent->takeaway = $request->json()->get('takeaway');
+                } else if ($rent->return === null) {
+                    $rent->return = $request->json()->get('return');
+                }
+                break;
+            case 'salesman':
+                if ($request->json()->get('active') !== null) {
+                    $rent->active = $request->json()->get('active');
+                }
+                break;
+            case 'admin':
+                if ($request->json()->get('return') !== null && $request->json()->get('takeaway') === null) {
+                    return response()->json([
+                        'takeaway' => ["The takeaway field must not be null if the return field is not null."],
+                    ], 400);
+                }
+                $rent->takeaway = $request->json()->get('takeaway');
+                $rent->return = $request->json()->get('return');
+                if ($request->json()->get('active') !== null) {
+                    $rent->active = $request->json()->get('active');
+                }
+                break;
+        }
         try {
-            $rent->update($request->json()->all());
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to update rent.'], 500);
+            $rent->save();
+        } catch (Exception) {
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->json($rent, 200);
     }
 
     public function update(Request $request, int $id): JsonResponse
     {
-        $rent = Rent::find($id);
-        if ($rent === null) {
-            return response()->json(['error' => 'Rent not found.'], 404);
-        }
         $validator = Validator::make($request->json()->all(), [
-            'user_id' => 'nullable|integer|min:0',
-            'car_id' => 'nullable|integer|min:0',
-            'begin' => 'nullable|date',
-            'end' => 'nullable|date',
+            'user_id' => 'required|integer|min:0',
+            'car_id' => 'required|integer|min:0',
+            'kilometers' => 'required|integer|min:0',
+            'begin' => 'required|date|after:today',
+            'end' => 'required|date|after:begin',
             'takeaway' => 'nullable|date',
             'return' => 'nullable|date',
-            'kilometers' => 'nullable|integer|min:0',
-            'active' => 'nullable|boolean',
+            'active' => 'required|boolean',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
+        }
+        if ($request->json()->get('return') !== null && $request->json()->get('takeaway') === null) {
+            return response()->json([
+                'takeaway' => ["The takeaway field must not be null if the return field is not null."],
+            ], 400);
+        }
+        $rent = Rent::find($id);
+        if ($rent === null) {
+            return response()->json(['error' => 'Rent not found.'], 404);
         }
         try {
             $rent->update($request->json()->all());
@@ -115,7 +138,7 @@ class RentController extends Controller
         try {
             $rent->delete();
         } catch (Exception) {
-            return response()->json(['error' => 'Failed to delete rent.'], 500);
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->noContent();
     }
