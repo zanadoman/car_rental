@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('end');
             $table->date('takeaway')->nullable();
             $table->date('return')->nullable();
-            $table->boolean('active');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

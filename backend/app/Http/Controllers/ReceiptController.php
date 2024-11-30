@@ -4,36 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Receipt;
 use Exception;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ReceiptController extends Controller
 {
-    public function index(): JsonResponse{
-        switch (Auth::user()->role){
-            case 'customer':
-                $receipts = Receipt::where('user_id', '=', Auth::user()->id)->get();
-                break;
-            case 'salesman':
-            case 'admin':
-                $receipts = Receipt::all();
-                break;
+    public function index(): JsonResponse
+    {
+        if (Auth::user()->role === 'customer') {
+            $receipts = Receipt::where('user_id', '=', Auth::user()->id)->get();
+        } else {
+            $receipts = Receipt::all();
         }
         return response()->json($receipts, 200);
     }
 
-    public function store(Request $request): JsonResponse{
+    public function store(Request $request): JsonResponse
+    {
         $validator = Validator::make($request->json()->all(), [
             'user_id' => 'required|integer|min:0',
             'car_id' => 'required|integer|min:0',
             'kilometers' => 'required|integer|min:0',
             'begin' => 'required|date',
-            'end' => 'required|date',
-            'delay' => 'nullable|date',
-            'totalfee' => 'required|integer|min:0',
+            'end' => 'required|date|after:begin|before:tomorrow',
+            'delay' => 'nullable|integer|min:0',
+            'totalfee' => 'required|integer|min:1',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -43,27 +41,19 @@ class ReceiptController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.', 500]);
         }
-        return response()->json([
-            'id' => $receipt->id,
-            'user_id' => $receipt->user_id,
-            'car_id' => $receipt->car_id,
-            'kilometers' => $receipt->kilometers,
-            'begin' => $receipt->begin,
-            'end' => $receipt->end,
-            'delay' => $receipt->delay,
-            'totalfee' => $receipt->totalfee,
-        ], 201);
+        return response()->json($receipt, 201);
     }
 
-    public function update(Request $request, int $id): JsonResponse{
+    public function update(Request $request, int $id): JsonResponse
+    {
         $validator = Validator::make($request->json()->all(), [
             'user_id' => 'required|integer|min:0',
             'car_id' => 'required|integer|min:0',
             'kilometers' => 'required|integer|min:0',
             'begin' => 'required|date',
-            'end' => 'required|date',
-            'delay' => 'nullable|date',
-            'totalfee' => 'required|integer|min:0',
+            'end' => 'required|date|after:begin|before:tomorrow',
+            'delay' => 'nullable|integer|min:0',
+            'totalfee' => 'required|integer|min:1',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -77,16 +67,7 @@ class ReceiptController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.', 500]);
         }
-        return response()->json([
-            'id' => $receipt->id,
-            'user_id' => $receipt->user_id,
-            'car_id' => $receipt->car_id,
-            'kilometers' => $receipt->kilometers,
-            'begin' => $receipt->begin,
-            'end' => $receipt->end,
-            'delay' => $receipt->delay,
-            'totalfee' => $receipt->totalfee,
-        ], 200);
+        return response()->json($receipt, 200);
     }
 
     public function destroy(int $id): Response
