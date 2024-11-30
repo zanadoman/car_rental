@@ -55,15 +55,7 @@ class CarController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.', 500]);
         }
-        return response()->json([
-            'id' => $car->id,
-            'license' => $car->license,
-            'category' => $car->category,
-            'kilometers' => $car->kilometers,
-            'dailyfee' => $car->dailyfee,
-            'last_maintenance' => $car->last_maintenance,
-            'next_maintenance' => $car->next_maintenance,
-        ], 201);
+        return response()->json($car, 201);
     }
 
     public function edit(Request $request, int $id): JsonResponse
@@ -90,15 +82,7 @@ class CarController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.', 500]);
         }
-        return response()->json([
-            'id' => $car->id,
-            'license' => $car->license,
-            'category' => $car->category,
-            'kilometers' => $car->kilometers,
-            'dailyfee' => $car->dailyfee,
-            'last_maintenance' => $car->last_maintenance,
-            'next_maintenance' => $car->next_maintenance,
-        ], 200);
+        return response()->json($car, 200);
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -129,15 +113,7 @@ class CarController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.', 500]);
         }
-        return response()->json([
-            'id' => $car->id,
-            'license' => $car->license,
-            'category' => $car->category,
-            'kilometers' => $car->kilometers,
-            'dailyfee' => $car->dailyfee,
-            'last_maintenance' => $car->last_maintenance,
-            'next_maintenance' => $car->next_maintenance,
-        ], 200);
+        return response()->json($car, 200);
     }
 
     public function destroy(int $id): Response
