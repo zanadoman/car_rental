@@ -38,17 +38,12 @@ class CarController extends Controller
             'brand' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'kilometers' => 'required|integer|min:0',
-            'dailyfee' => 'required|integer|min:0',
+            'dailyfee' => 'required|integer|min:1',
             'last_maintenance' => 'required|integer|min:0',
-            'next_maintenance' => 'required|integer|min:0',
+            'next_maintenance' => 'required|integer|min:0|gt:last_maintenance',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
-        }
-        if ($request->json()->get('next_maintenance') <= $request->json()->get('last_maintenance')) {
-            return response()->json([
-                'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
-            ], 400);
         }
         try {
             $car = Car::create($request->json()->all());
@@ -73,7 +68,7 @@ class CarController extends Controller
         $car->last_maintenance = $car->kilometers;
         if ($request->json()->get('next_maintenance') <= $car->last_maintenance) {
             return response()->json([
-                'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
+                'next_maintenance' => ["The next maintenance field must be greater than {$car->last_maintenance}."],
             ], 400);
         }
         $car->next_maintenance = $request->json()->get('next_maintenance');
@@ -92,17 +87,12 @@ class CarController extends Controller
             'brand' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'kilometers' => 'required|integer|min:0',
-            'dailyfee' => 'required|integer|min:0',
+            'dailyfee' => 'required|integer|min:1',
             'last_maintenance' => 'required|integer|min:0',
-            'next_maintenance' => 'required|integer|min:0',
+            'next_maintenance' => 'required|integer|min:0|gt:last_maintenance',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
-        }
-        if ($request->json()->get('next_maintenance') <= $request->json()->get('last_maintenance')) {
-            return response()->json([
-                'next_maintenance' => ['The next maintenance must be greater than the last maintenance.'],
-            ], 400);
         }
         $car = Car::find($id);
         if ($car === null) {
