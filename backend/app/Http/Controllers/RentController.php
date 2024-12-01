@@ -6,8 +6,8 @@ use App\Models\Rent;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use illuminate\Support\Facades\Auth;
-use illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RentController extends Controller
 {
