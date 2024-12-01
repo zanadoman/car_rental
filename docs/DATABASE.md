@@ -32,17 +32,17 @@
 
 ## 🔑 Rents
 
-|Name       |Type                         |Properties   |
-|:---------:|:---------------------------:|:-----------:|
-|id         |id()                         |             |
-|user_id    |foreignId('user_id')         |constrained()|
-|car_id     |foreignId('car_id')          |constrained()|
-|kilometers |unsignedInteger('kilometers')|             |
-|begin      |date('begin')                |             |
-|end        |date('end')                  |             |
-|takeaway   |date('takeaway')             |nullable()   |
-|return     |date('return')               |nullable()   |
-|active     |boolean('active')            |             |
+|Name       |Type                         |Properties    |
+|:---------:|:---------------------------:|:------------:|
+|id         |id()                         |              |
+|user_id    |foreignId('user_id')         |constrained() |
+|car_id     |foreignId('car_id')          |constrained() |
+|kilometers |unsignedInteger('kilometers')|              |
+|begin      |date('begin')                |              |
+|end        |date('end')                  |              |
+|takeaway   |date('takeaway')             |nullable()    |
+|return     |date('return')               |nullable()    |
+|active     |boolean('active')            |default(false)|
 
 ---
 

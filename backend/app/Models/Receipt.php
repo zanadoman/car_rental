@@ -16,8 +16,8 @@ class Receipt extends Model
         'totalfee',
     ];
 
-    protected $hidden =[
+    protected $hidden = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 }
