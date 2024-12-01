@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top mb-1 mb-md-5 bg-body-secondary shadow">
+<nav class="navbar navbar-expand sticky-top mb-1 mb-md-5 bg-body-secondary shadow">
   <div class="container-fluid">
     <div class="d-flex">
       <a class="navbar-brand">Car Rental</a>
@@ -8,6 +8,12 @@
              [ngClass]="{ 'active': router.url === '/cars' }"
              routerLink="/cars"
           >Cars</a>
+        </li>
+        <li *ngIf="userName !== null" class="nav-item">
+          <a class="nav-link"
+             [ngClass]="{ 'active': router.url === '/rents' }"
+             routerLink="/rents"
+          >Rents</a>
         </li>
       </ul>
     </div>

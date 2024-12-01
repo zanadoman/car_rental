@@ -1,0 +1,205 @@
+<div class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center">
+  <div *ngIf="userRole === 'admin'"
+       class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow"
+  >
+    <h3 class="mb-4 fw-bold text-center">Register Rent</h3>
+    <form [formGroup]="registerRentForm" (ngSubmit)="registerRent()">
+      <div class="form-floating mb-3">
+        <input id="register-form-user_id"
+               class="form-control"
+               type="number"
+               formControlName="user_id"
+               placeholder="user_id"
+        >
+        <label for="register-form-user_id">User ID</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-car_id"
+               class="form-control"
+               type="number"
+               formControlName="car_id"
+               placeholder="car_id"
+        >
+        <label for="register-form-car_id">Car ID</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-kilometers"
+               class="form-control"
+               type="text"
+               formControlName="kilometers"
+               placeholder="Kilometers"
+        >
+        <label for="register-form-kilometers">Kilometers</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input  id="register-form-begin"
+                class="form-control"
+                type="date"
+                formControlName="begin"
+                placeholder="Begin"
+                value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="register-form-begin">Begin</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input  id="register-form-end"
+                class="form-control"
+                type="date"
+                formControlName="end"
+                placeholder="End"
+                value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="register-form-end">End</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-takeaway"
+               class="form-control"
+               type="date"
+               formControlName="takeaway"
+               placeholder="Takeaway"
+               value="{{ currentDate | date:'yyyy-MM-dd' }}"
+               min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="register-form-takeaway">Takeaway</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-return"
+               class="form-control"
+               type="date"
+               formControlName="return"
+               placeholder="Return"
+               value="{{ currentDate | date:'yyyy-MM-dd' }}"
+               min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="register-form-return">Return</label>
+      </div>
+      <div class="form-check mb-3">
+        <input id="register-form-active"
+               class="form-check-input"
+               type="checkbox"
+               formControlName="active"
+               placeholder="Active"
+        >
+        <label for="register-form-active" class="form-check-label">Active</label>
+      </div>
+      <button class="btn btn-primary w-100" type="submit">Register</button>
+    </form>
+</div>
+
+<div *ngFor="let rent of rents"
+     class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center"
+>
+  <div class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow">
+    <ng-container *ngIf="userRole === 'customer'">
+      <div class="">
+        <h5 class="mb-4 fw-bold text-center">Rent ID: {{ rent.id }}</h5>
+        <ul class="overflow-hidden">
+          <li>
+            <p class="text-nowrap mb-3">User ID: {{ rent.user_id }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Car ID: {{ rent.car_id }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Kilometers: {{ rent.kilometers }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Begin: {{ rent.begin }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">End: {{ rent.end }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Takeaway: {{ rent.takeaway }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Return: {{ rent.return }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap">Active: {{ rent.active }}</p>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+    <form *ngIf="userRole === 'admin' && filteredForms.has(rent.id)"
+          [formGroup]="filteredForms.get(rent.id)!"
+          (ngSubmit)="updateRent(rent.id)"
+    >
+      <h3 class="mb-4 fw-bold text-center">Update Form</h3>
+      <div class="form-floating mb-3">
+        <input id="update-form-kilometers-{{ rent.kilometers }}"
+               class="form-control"
+               type="text"
+               formControlName="kilometers"
+               placeholder="Kilometers"
+        >
+        <label for="update-form-kilometers-{{ rent.kilometers }}">Kilometers</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input  id="update-form-begin-{{ rent.begin }}"
+                class="form-control"
+                type="date"
+                formControlName="begin"
+                placeholder="Begin"
+                value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="update-form-begin-{{ rent.begin }}">Begin</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input  id="update-form-end-{{ rent.end }}"
+                class="form-control"
+                type="date"
+                formControlName="end"
+                placeholder="End"
+                value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="update-form-end-{{ rent.end }}">End</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-takeaway-{{ rent.takeaway }}"
+               class="form-control"
+               type="date"
+               formControlName="takeaway"
+               placeholder="Takeaway"
+               value="{{ currentDate | date:'yyyy-MM-dd' }}"
+              min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="update-form-takeaway-{{ rent.takeaway }}">Takeaway</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-return-{{ rent.return }}"
+               class="form-control"
+               type="date"
+               formControlName="return"
+               placeholder="Return"
+               value="{{ currentDate | date:'yyyy-MM-dd' }}"
+               min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="update-form-return-{{ rent.return }}">Return</label>
+      </div>
+      <div class="form-check mb-3">
+        <input id="update-form-active-{{ rent.active }}"
+               class="form-check-input"
+               type="checkbox"
+               formControlName="active"
+              placeholder="Active"
+        >
+        <label for="update-form-active-{{ rent.active }}" class="form-check-label">Active</label>
+      </div>
+      <button class="btn btn-primary w-100 mb-3" type="submit">Update</button>
+      <button class="btn btn-danger w-100" type="button" (click)="deleteRent(rent.id)">Delete</button>
+      </form>
+  </div>
+</div>
+
+<!--
+salesman: nem aktív -> aktív
+aktív -> deaktiválás -> receipt page
+
+customer: list
+
+-->
