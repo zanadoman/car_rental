@@ -48,7 +48,7 @@ class CarController extends Controller
         try {
             $car = Car::create($request->json()->all());
         } catch (Exception) {
-            return response()->json(['error' => 'Internal server error.', 500]);
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->json($car, 201);
     }
@@ -63,7 +63,7 @@ class CarController extends Controller
         }
         $car = Car::find($id);
         if ($car === null) {
-            return response()->json(['error' => 'Car not found.', 404]);
+            return response()->json(['error' => 'Car not found.'], 404);
         }
         $car->last_maintenance = $car->kilometers;
         if ($request->json()->get('next_maintenance') <= $car->last_maintenance) {
@@ -75,7 +75,7 @@ class CarController extends Controller
         try {
             $car->save();
         } catch (Exception) {
-            return response()->json(['error' => 'Internal server error.', 500]);
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->json($car, 200);
     }
@@ -96,12 +96,12 @@ class CarController extends Controller
         }
         $car = Car::find($id);
         if ($car === null) {
-            return response()->json(['error' => 'Car not found.', 404]);
+            return response()->json(['error' => 'Car not found.'], 404);
         }
         try {
             $car->update($request->json()->all());
         } catch (Exception) {
-            return response()->json(['error' => 'Internal server error.', 500]);
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->json($car, 200);
     }
@@ -110,12 +110,12 @@ class CarController extends Controller
     {
         $car = Car::find($id);
         if ($car === null) {
-            return response()->json(['error' => 'Car not found.', 404]);
+            return response()->json(['error' => 'Car not found.'], 404);
         }
         try {
             $car->delete();
         } catch (Exception) {
-            return response()->json(['error' => 'Internal server error.', 500]);
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->noContent();
     }

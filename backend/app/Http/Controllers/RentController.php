@@ -44,7 +44,7 @@ class RentController extends Controller
         try {
             $rent = Rent::create($request->json()->all());
         } catch (Exception) {
-            return response()->json(['error' => 'Internal server error.', 500]);
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->json($rent, 201);
     }
@@ -61,7 +61,7 @@ class RentController extends Controller
         }
         $rent = Rent::find($id);
         if ($rent === null) {
-            return response()->json(['error' => 'Rent not found.', 404]);
+            return response()->json(['error' => 'Rent not found.'], 404);
         }
         switch (Auth::user()->role) {
             case 'customer':
