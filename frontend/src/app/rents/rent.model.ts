@@ -2,7 +2,7 @@ export interface Rent {
   id: number
   user_id: number
   car_id: number
-  kilometer: number
+  kilometers: number
   begin: Date
   end: Date
   takeaway: Date
