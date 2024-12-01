@@ -6,5 +6,5 @@ import { RentsComponent } from './rents/rents.component';
 export const routes: Routes = [
   { path: '', component: AuthenticationComponent },
   { path: 'cars', component: CarsComponent },
-  { path: 'rents', component: RentsComponent}
+  { path: 'rents', component: RentsComponent }
 ];
