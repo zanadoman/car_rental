@@ -55,7 +55,7 @@ class AuthenticationController extends Controller
                 'name' => Auth::user()->name,
                 'email' => Auth::user()->email,
                 'role' => Auth::user()->role,
-            ], 200);
+            ]);
         }
         return response()->json(['error' => 'Invalid credentials.'], 401);
     }

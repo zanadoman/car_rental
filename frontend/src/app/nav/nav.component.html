@@ -2,14 +2,14 @@
   <div class="container-fluid">
     <div class="d-flex">
       <a class="navbar-brand">Car Rental</a>
-      <ul class="navbar-nav">
-        <li *ngIf="userName !== null" class="nav-item">
+      <ul *ngIf="userName !== null" class="navbar-nav">
+        <li class="nav-item">
           <a class="nav-link"
              [ngClass]="{ 'active': router.url === '/cars' }"
              routerLink="/cars"
           >Cars</a>
         </li>
-        <li *ngIf="userName !== null" class="nav-item">
+        <li class="nav-item">
           <a class="nav-link"
              [ngClass]="{ 'active': router.url === '/rents' }"
              routerLink="/rents"

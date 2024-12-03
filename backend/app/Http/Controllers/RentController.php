@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Validator;
 
 class RentController extends Controller
 {
+    public function show(int $id): JsonResponse
+    {
+        $rent = Rent::find($id);
+        if ($rent === null) {
+            return response()->json(['error' => 'Rent not found.'], 404);
+        }
+        return response()->json($rent);
+    }
+
     public function index(): JsonResponse
     {
         if (Auth::user()->role === 'customer') {
@@ -18,7 +27,7 @@ class RentController extends Controller
         } else {
             $rents = Rent::all();
         }
-        return response()->json($rents, 200);
+        return response()->json($rents);
     }
 
     public function store(Request $request): JsonResponse
@@ -44,7 +53,7 @@ class RentController extends Controller
         try {
             $rent = Rent::create($request->json()->all());
         } catch (Exception) {
-            return response()->json(['error' => 'Internal server error.', 500]);
+            return response()->json(['error' => 'Internal server error.'], 500);
         }
         return response()->json($rent, 201);
     }
@@ -61,7 +70,7 @@ class RentController extends Controller
         }
         $rent = Rent::find($id);
         if ($rent === null) {
-            return response()->json(['error' => 'Rent not found.', 404]);
+            return response()->json(['error' => 'Rent not found.'], 404);
         }
         switch (Auth::user()->role) {
             case 'customer':
@@ -94,7 +103,7 @@ class RentController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
-        return response()->json($rent, 200);
+        return response()->json($rent);
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -126,7 +135,7 @@ class RentController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
-        return response()->json($rent, 200);
+        return response()->json($rent);
     }
 
     public function destroy(int $id): JsonResponse
