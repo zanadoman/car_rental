@@ -18,7 +18,7 @@ class RentController extends Controller
         } else {
             $rents = Rent::all();
         }
-        return response()->json($rents, 200);
+        return response()->json($rents);
     }
 
     public function store(Request $request): JsonResponse
@@ -94,7 +94,7 @@ class RentController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
-        return response()->json($rent, 200);
+        return response()->json($rent);
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -126,7 +126,7 @@ class RentController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
-        return response()->json($rent, 200);
+        return response()->json($rent);
     }
 
     public function destroy(int $id): JsonResponse

@@ -28,7 +28,7 @@ class CarController extends Controller
                 $cars = Car::all();
                 break;
         }
-        return response()->json($cars, 200);
+        return response()->json($cars);
     }
 
     public function store(Request $request): JsonResponse
@@ -77,7 +77,7 @@ class CarController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
-        return response()->json($car, 200);
+        return response()->json($car);
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -103,7 +103,7 @@ class CarController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
-        return response()->json($car, 200);
+        return response()->json($car);
     }
 
     public function destroy(int $id): Response

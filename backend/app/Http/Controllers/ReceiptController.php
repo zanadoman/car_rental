@@ -20,7 +20,7 @@ class ReceiptController extends Controller
         } else {
             $receipts = Receipt::all();
         }
-        return response()->json($receipts, 200);
+        return response()->json($receipts);
     }
 
     public function store(Request $request): JsonResponse
@@ -86,7 +86,7 @@ class ReceiptController extends Controller
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
-        return response()->json($receipt, 200);
+        return response()->json($receipt);
     }
 
     public function destroy(int $id): Response
