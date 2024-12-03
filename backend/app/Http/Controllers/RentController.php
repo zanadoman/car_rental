@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Validator;
 
 class RentController extends Controller
 {
+    public function show(int $id): JsonResponse
+    {
+        $rent = Rent::find($id);
+        if ($rent === null) {
+            return response()->json(['error' => 'Rent not found.'], 404);
+        }
+        return response()->json($rent);
+    }
+
     public function index(): JsonResponse
     {
         if (Auth::user()->role === 'customer') {
