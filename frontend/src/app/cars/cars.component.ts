@@ -18,6 +18,7 @@ export class CarsComponent {
   private httpClient = inject(HttpClient)
   private formBuilder = inject(FormBuilder)
 
+  userId = -1
   userRole = 'visitor'
   currentDate = new Date
 
@@ -39,6 +40,7 @@ export class CarsComponent {
   filteredForms = new Map<number, FormGroup>
 
   constructor() {
+    this.userId = Number(sessionStorage.getItem('userId')) || -1
     this.userRole = sessionStorage.getItem('userRole') || 'visitor'
     if (!['customer', 'mechanic', 'salesman', 'admin'].includes(this.userRole)) {
       this.router.navigate([''])
@@ -78,10 +80,14 @@ export class CarsComponent {
       { withCredentials: true }
     ).subscribe({
       next: response => console.log(response),
-      error: error => console.log(error.error),
+      error: error => {
+        console.log(error.error)
+        window.alert('Request failed.')
+      },
       complete: () => {
         console.log('request completed')
         this.getCars()
+        window.alert('Car registered successfully.')
       }
     })
   }
@@ -96,10 +102,14 @@ export class CarsComponent {
       { withCredentials: true }
     ).subscribe({
       next: response => console.log(response),
-      error: error => console.log(error.error),
+      error: error => {
+        console.log(error.error)
+        window.alert('Request failed.')
+      },
       complete: () => {
         console.log('request completed')
         this.getCars()
+        window.alert('Car repaired successfully.')
       }
     })
   }
@@ -114,10 +124,14 @@ export class CarsComponent {
       { withCredentials: true }
     ).subscribe({
       next: response => console.log(response),
-      error: error => console.log(error.error),
+      error: error => {
+        console.log(error.error)
+        window.alert('Request failed.')
+      },
       complete: () => {
         console.log('request completed')
         this.getCars()
+        window.alert('Car updated successfully.')
       }
     })
   }
@@ -130,10 +144,54 @@ export class CarsComponent {
       { withCredentials: true }
     ).subscribe({
       next: response => console.log(response),
-      error: error => console.log(error.error),
+      error: error => {
+        console.log(error.error)
+        window.alert('Request failed.')
+      },
       complete: () => {
         console.log('request completed')
         this.getCars()
+        window.alert('Car deleted successfully.')
+      }
+    })
+  }
+
+  rentCar(id: number) {
+    console.log('request started')
+    console.log(id)
+    let car = this.cars.find(car => car.id === id)
+    if (car === undefined) {
+      console.log('car not found')
+      return
+    }
+    console.log(car)
+    let form = this.filteredForms.get(id)
+    if (form === undefined) {
+      console.log('form not found')
+      return
+    }
+    console.log(form)
+    this.httpClient.post(
+      `${environment.apiUrl}/rents`,
+      {
+        user_id: this.userId,
+        car_id: car.id,
+        kilometers: car.kilometers,
+        begin: form.value.begin,
+        end: form.value.end,
+        active: false
+      },
+      { withCredentials: true }
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => {
+        console.log(error.error)
+        window.alert('Request failed.')
+      },
+      complete: () => {
+        console.log('request completed')
+        this.getCars()
+        window.alert('Car rented successfully.')
       }
     })
   }
@@ -177,9 +235,14 @@ export class CarsComponent {
 
   filterForms() {
     this.filteredForms = new Map(this.filteredCars.map(car => {
-      return [
-        car.id,
-        this.formBuilder.group({
+      let form!: FormGroup
+      if (this.userRole === 'customer') {
+        form = this.formBuilder.group({
+          begin: Date.now,
+          end: Date.now
+        })
+      } else {
+        form = this.formBuilder.group({
           license: car.license,
           brand: car.brand,
           category: car.category,
@@ -188,7 +251,8 @@ export class CarsComponent {
           last_maintenance: car.last_maintenance,
           next_maintenance: car.next_maintenance
         })
-      ]
+      }
+      return [car.id, form]
     }))
     console.log('forms filtered')
     console.log(this.filteredForms)

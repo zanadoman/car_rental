@@ -17,6 +17,7 @@ Route::middleware(['role:customer,mechanic,salesman,admin'])->group(function () 
 });
 
 Route::middleware(['role:customer,salesman,admin'])->group(function () {
+    Route::get('/rent/{id}', [RentController::class, 'show']);
     Route::get('/rents', [RentController::class, 'index']);
     Route::patch('/rent/{id}', [RentController::class, 'edit']);
     Route::get('/receipts', [ReceiptController::class, 'index']);
