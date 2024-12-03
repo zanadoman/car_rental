@@ -49,9 +49,6 @@ export class AuthenticationComponent {
         sessionStorage.setItem('userName', user.name)
         sessionStorage.setItem('userEmail', user.email)
         sessionStorage.setItem('userRole', user.role)
-        this.loginEmailErrors = []
-        this.loginPasswordErrors = []
-        this.router.navigate(['cars'])
       },
       error: error => {
         console.log(error.error)
@@ -63,7 +60,12 @@ export class AuthenticationComponent {
           this.loginPasswordErrors = error.error.password || []
         }
       },
-      complete: () => console.log('request completed')
+      complete: () => {
+        console.log('request completed')
+        this.loginEmailErrors = []
+        this.loginPasswordErrors = []
+        this.router.navigate(['cars'])
+      }
     })
   }
 
@@ -81,10 +83,6 @@ export class AuthenticationComponent {
         sessionStorage.setItem('userName', user.name)
         sessionStorage.setItem('userEmail', user.email)
         sessionStorage.setItem('userRole', user.role)
-        this.registerNameErrors = []
-        this.registerEmailErrors = []
-        this.registerPasswordErrors = []
-        this.router.navigate(['cars'])
       },
       error: error => {
         console.log(error.error)
@@ -98,7 +96,13 @@ export class AuthenticationComponent {
           this.registerPasswordErrors = error.error.password || []
         }
       },
-      complete: () => console.log('request completed')
+      complete: () => {
+        console.log('request completed')
+        this.registerNameErrors = []
+        this.registerEmailErrors = []
+        this.registerPasswordErrors = []
+        this.router.navigate(['cars'])
+      }
     })
   }
 }
