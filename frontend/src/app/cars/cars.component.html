@@ -129,13 +129,15 @@
       <div *ngIf="userRole !== 'salesman'" class="col-12 col-md-6 px-0">
         <ng-container *ngIf="userRole === 'customer'">
           <h5 class="mb-4 fw-bold text-center">Submit Rent</h5>
-          <form>
+          <form *ngIf="filteredForms.has(car.id)"
+                [formGroup]="filteredForms.get(car.id)!"
+                (ngSubmit)="rentCar(car.id)"
+          >
             <div class="form-floating mb-3">
               <input id="rent-form-begin-{{ car.id }}"
                      class="form-control"
                      type="date"
-                     name="begin"
-                     value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                     formControlName="begin"
                      min="{{ currentDate | date:'yyyy-MM-dd' }}"
               >
               <label for="rent-form-begin-{{ car.id }}">Begin</label>
@@ -144,8 +146,7 @@
               <input id="rent-form-end-{{ car.id }}"
                      class="form-control"
                      type="date"
-                     name="end"
-                     value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                     formControlName="end"
                      min="{{ currentDate | date:'yyyy-MM-dd' }}"
               >
               <label for="rent-form-end-{{ car.id }}">End</label>
