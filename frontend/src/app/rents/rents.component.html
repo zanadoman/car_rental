@@ -125,40 +125,38 @@
     </ng-container>
     <ng-container *ngIf="userRole === 'salesman'">
       <div class="container text-center">
-        <h5 class="mb-4 fw-bold text-center">Rent ID: {{ rent.id }}</h5>
+        <h5 class="mb-4 fw-bold">Rent ID: {{ rent.id }}</h5>
         <div class="row">
-          <div class="col">
-            <ul class="overflow-hidden list-group list-group-flush">
-              <li>
-                <p class="text-nowrap mb-3 list-group-item">User ID: {{ rent.user_id }}</p>
-              </li>
-              <li>
-                <p class="text-nowrap mb-3 list-group-item">Car ID: {{ rent.car_id }}</p>
-              </li>
-              <li>
-                <p class="text-nowrap mb-3 list-group-item">Kilometers: {{ rent.kilometers }}</p>
-              </li>
-              <li>
-                <p class="text-nowrap mb-3 list-group-item">Begin: {{ rent.begin }}</p>
-              </li>
-              <li>
-                <p class="text-nowrap mb-3 list-group-item">End: {{ rent.end }}</p>
-              </li>
-              <li>
-                <p class="text-nowrap mb-3 list-group-item">Takeaway: {{ rent.takeaway }}</p>
-              </li>
-              <li>
-                <p class="text-nowrap mb-3 list-group-item">Return: {{ rent.return }}</p>
-              </li>
-              <li>
-                <p class="text-nowrap list-group-item">Active: {{ rent.active }}</p>
-              </li>
-            </ul>
-          </div>
-          <div class="col">
+          <ul class="overflow-hidden list-group list-group-flush row row-cols-2">
+            <li class="list-group-item">
+              <p class="text-nowrap mb-3">User ID: {{ rent.user_id }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="text-nowrap mb-3">Car ID: {{ rent.car_id }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="text-nowrap mb-3">Kilometers: {{ rent.kilometers }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="text-nowrap mb-3">Begin: {{ rent.begin }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="text-nowrap mb-3">End: {{ rent.end }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="text-nowrap mb-3">Takeaway: {{ rent.takeaway }}</p>
+            </li>
+            <li class="list-group-item">
+              <p class="text-nowrap mb-3">Return: {{ rent.return }}</p>
+            </li>
+            <li  class="list-group-item">
+              <p class="text-nowrap">Active: {{ rent.active }}</p>
+            </li>
+          </ul>
+          <div>
             <div *ngIf="!rent.active;then content else other_content">idk</div>
               <ng-template #content><button class="btn btn-primary w-100" type="button" (click)="activateRent(rent.id)">Activate</button></ng-template>
-              <ng-template #other_content><button class="btn btn-primary w-100" type="button" (click)="deactivateRent(rent.id)">Deactivate</button></   ng-template>
+              <ng-template #other_content><button class="btn btn-primary w-100" type="button" (click)="deactivateRent(rent.id)">Deactivate</button></ng-template>
 
               <button class="btn btn-primary w-100 mt-2"
               [ngClass]="{ 'active': router.url === '/receipt' }"
