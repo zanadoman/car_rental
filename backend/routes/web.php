@@ -5,6 +5,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\RentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/status', [Controller::class, 'status']);
@@ -43,4 +44,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::delete('/rent/{id}', [RentController::class, 'destroy']);
     Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
     Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
+    Route::get('/users', [UserController::class, 'index']);
+    Route::patch('/user/{id}', [UserController::class, 'edit']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
 });
