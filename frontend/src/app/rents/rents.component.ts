@@ -120,6 +120,42 @@ export class RentsComponent {
     })
   }
 
+  takeawayRent(id: number) {
+    console.log('request started')
+    console.log(this.registerRentForm.value)
+    this.httpClient.patch(
+      `${environment.apiUrl}/rent/${id}`,
+      //this.registerRentForm.value.active ?
+       //{ takeaway: new Date().toISOString().split('T')[0] } : {},
+       { takeaway: new Date().toISOString().split('T')[0] },
+      { withCredentials: true }
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error.error),
+      complete: () => {
+        console.log('request completed')
+        this.getRents()
+      }
+    })
+  }
+
+  returnRent(id: number) {
+    console.log('request started')
+    console.log(this.registerRentForm.value)
+    this.httpClient.patch(
+      `${environment.apiUrl}/rent/${id}`,
+       { return: new Date().toISOString().split('T')[0] },
+      { withCredentials: true }
+    ).subscribe({
+      next: response => console.log(response),
+      error: error => console.log(error.error),
+      complete: () => {
+        console.log('request completed')
+        this.getRents()
+      }
+    })
+  }
+
   updateRent(id: number) {
     console.log('request started')
     console.log(id)
