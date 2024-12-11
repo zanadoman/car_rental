@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\Validator;
 
 class CarController extends Controller
 {
+    public function show(int $id): JsonResponse
+    {
+        $car = Car::find($id);
+        if ($car === null) {
+            return response()->json(['error' => 'Car not found.'], 404);
+        }
+        return response()->json($car);
+    }
+
     public function index(): JsonResponse
     {
         switch (Auth::user()->role) {
