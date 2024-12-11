@@ -14,6 +14,7 @@ Route::post('/login', [AuthenticationController::class, 'login']);
 
 Route::middleware(['role:customer,mechanic,salesman,admin'])->group(function () {
     Route::post('/logout', [AuthenticationController::class, 'logout']);
+    Route::get('/car/{id}', [CarController::class, 'show']);
     Route::get('/cars', [CarController::class, 'index']);
 });
 
