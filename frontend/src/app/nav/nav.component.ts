@@ -16,10 +16,14 @@ export class NavComponent {
 
   router = inject(Router)
   userName: string | null = null
+  userRole = 'visitor'
 
   ngOnInit() {
     this.router.events.subscribe({
-      next: () => this.userName = sessionStorage.getItem('userName')
+      next: () => {
+        this.userName = sessionStorage.getItem('userName')
+        this.userRole = sessionStorage.getItem('userRole') || 'visitor'
+      }
     })
   }
 

@@ -9,13 +9,13 @@
              routerLink="/cars"
           >Cars</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="userRole !== 'mechanic'" class="nav-item">
           <a class="nav-link"
              [ngClass]="{ 'active': router.url === '/rents' }"
              routerLink="/rents"
           >Rents</a>
         </li>
-        <li *ngIf="userName !== null" class="nav-item">
+        <li *ngIf="userRole !== 'mechanic'" class="nav-item">
           <a class="nav-link"
              [ngClass]="{ 'active': router.url === '/receipts' }"
              routerLink="/receipts"
