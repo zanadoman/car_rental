@@ -36,6 +36,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
             'password' => 'required|string|min:8',
+            'role' => 'required|string',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
