@@ -1,0 +1,135 @@
+<div class="row bg-body-secondary rounded-3 shadow justify-content-center">
+  <div *ngIf="userRole !== 'customer'" class="pt-3 pt-md-5 row justify-content-center">
+    <div class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow">
+    <h3 class="mb-4 fw-bold text-center">Register Receipt</h3>
+    <form [formGroup]="registerReceiptForm" (ngSubmit)="registerReceipt()">
+      <div class="form-floating mb-3">
+        <input id="register-form-rent-id"
+               class="form-control"
+               type="number"
+               formControlName="rent_id"
+               placeholder="Rent ID"
+        >
+        <label for="register-form-rent-id">Rent ID</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="register-form-kilometers"
+               class="form-control"
+               type="text"
+               formControlName="kilometers"
+               placeholder="Kilometers"
+        >
+        <label for="register-form-kilometers">Kilometers</label>
+      </div>
+      <button class="btn btn-primary w-100" type="submit">Register</button>
+    </form>
+    </div>
+</div>
+
+<div *ngFor="let receipt of receipts" class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center">
+  <div class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow">
+    <ng-container *ngIf="userRole !== 'admin'">
+      <div class="">
+        <h5 class="mb-4 fw-bold text-center">Receipt ID: {{ receipt.id }}</h5>
+        <ul class="overflow-hidden">
+          <li>
+            <p class="text-nowrap mb-3">User ID: {{ receipt.user_id }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Car ID: {{ receipt.car_id }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Kilometers: {{ receipt.kilometers }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Begin: {{ receipt.begin }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">End: {{ receipt.end }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap mb-3">Delay: {{ receipt.delay }}</p>
+          </li>
+          <li>
+            <p class="text-nowrap">Totalfee: {{ receipt.totalfee }}</p>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+    <form *ngIf="userRole === 'admin' && filteredForms.has(receipt.id)"
+          [formGroup]="filteredForms.get(receipt.id)!"
+          (ngSubmit)="updateReceipt(receipt.id)"
+    >
+      <h3 class="mb-4 fw-bold text-center">Update Form</h3>
+      <div class="form-floating mb-3">
+        <input id="update-form-user_id-{{ receipt.user_id }}"
+               class="form-control"
+               type="number"
+               formControlName="user_id"
+               placeholder="user_id"
+        >
+        <label for="update-form-user_id-{{ receipt.user_id }}">User ID</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-car_id-{{ receipt.car_id }}"
+               class="form-control"
+               type="number"
+               formControlName="car_id"
+               placeholder="car_id"
+        >
+        <label for="update-form-car_id-{{ receipt.car_id }}">Car ID</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-kilometers-{{ receipt.kilometers }}"
+               class="form-control"
+               type="text"
+               formControlName="kilometers"
+               placeholder="Kilometers"
+        >
+        <label for="update-form-kilometers-{{ receipt.kilometers }}">Kilometers</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input  id="update-form-begin-{{ receipt.begin }}"
+                class="form-control"
+                type="date"
+                formControlName="begin"
+                placeholder="Begin"
+                value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="update-form-begin-{{ receipt.begin }}">Begin</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input  id="update-form-end-{{ receipt.end }}"
+                class="form-control"
+                type="date"
+                formControlName="end"
+                placeholder="End"
+                value="{{ currentDate | date:'yyyy-MM-dd' }}"
+                min="{{ currentDate | date:'yyyy-MM-dd' }}"
+        >
+        <label for="update-form-end-{{ receipt.end }}">End</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-delay-{{ receipt.delay }}"
+               class="form-control"
+               type="text"
+               formControlName="delay"
+               placeholder="Delay"
+        >
+        <label for="update-form-delay-{{ receipt.delay }}">Delay</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-totalfee-{{ receipt.totalfee }}"
+               class="form-control"
+               type="text"
+               formControlName="totalfee"
+               placeholder="Totalfee"
+        >
+        <label for="update-form-totalfee-{{ receipt.totalfee }}">Totalfee</label>
+      </div>
+      <button class="btn btn-primary w-100 mb-3" type="submit">Update</button>
+      <button class="btn btn-danger w-100" type="button" (click)="deleteReceipt(receipt.id)">Delete</button>
+      </form>
+  </div>
+</div>
