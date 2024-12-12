@@ -30,24 +30,28 @@ class ReceiptController extends Controller
             'car_id' => 'required|integer|min:0',
             'kilometers' => 'required|integer|min:0',
             'begin' => 'required|date|before:end',
-            'end' => 'required|date|before:today',
-            'delay' => 'nullable|integer|min:0',
+            'end' => 'required|date',
+            'delay' => 'required|integer|min:0',
             'totalfee' => 'required|integer|min:1',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+
         $car = Car::find($request->json()->get('car_id'));
         if ($car === null) {
             return response()->json(['error' => 'Car not found.'], 404);
         }
-        if ($car->kilometers < $request->json()->get('kilometers')) {
+        if ($car->kilometers > $request->json()->get('kilometers')) {
             return response()->json([
                 'kilometers' => ['The kilometers field must not be more than the kilometers of the car.'],
             ], 400);
         }
         try {
             $receipt = Receipt::create($request->json()->all());
+
+            $car->kilometers = $request->json()->get('kilometers');
+            $car->save();
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }
@@ -61,8 +65,8 @@ class ReceiptController extends Controller
             'car_id' => 'required|integer|min:0',
             'kilometers' => 'required|integer|min:0',
             'begin' => 'required|date|before:end',
-            'end' => 'required|date|before:today',
-            'delay' => 'nullable|integer|min:0',
+            'end' => 'required|date',
+            'delay' => 'required|integer|min:0',
             'totalfee' => 'required|integer|min:1',
         ]);
         if ($validator->fails()) {
@@ -72,17 +76,15 @@ class ReceiptController extends Controller
         if ($car === null) {
             return response()->json(['error' => 'Car not found.'], 404);
         }
-        if ($car->kilometers < $request->json()->get('kilometers')) {
-            return response()->json([
-                'kilometers' => ['The kilometers field must not be more than the kilometers of the car.'],
-            ], 400);
-        }
         $receipt = Receipt::find($id);
         if ($receipt === null) {
             return response()->json(['error' => 'Receipt not found.'], 404);
         }
         try {
             $receipt->update($request->json()->all());
+
+            $car->kilometers = $request->json()->get('kilometers');
+            $car->save();
         } catch (Exception) {
             return response()->json(['error' => 'Internal server error.'], 500);
         }

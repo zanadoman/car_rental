@@ -5,6 +5,8 @@ import { Receipts } from './receipts.model';
 import { environment } from '../../environment/environment';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Rent } from '../rents/rent.model';
+import { Car } from '../cars/car.model';
 
 @Component({
   selector: 'app-receipts',
@@ -22,14 +24,8 @@ export class ReceiptsComponent {
   currentDate = new Date
 
   registerReceiptForm = this.formBuilder.group({
-    user_id: '',
-    car_id: '',
-    receipt_id: '',
-    kilometers: 0,
-    begin: Date,
-    end: Date,
-    delay: 0,
-    totalfee: 0,
+    rent_id: '',
+    kilometers: '',
   })
 
   receipts: Receipts[] = []
@@ -71,13 +67,68 @@ export class ReceiptsComponent {
   registerReceipt() {
     console.log('request started')
     console.log(this.registerReceiptForm.value)
+
+    if (!this.registerReceiptForm.value.rent_id || !this.registerReceiptForm.value.kilometers) {
+      console.error('Form is invalid');
+      window.alert('Please fill out all fields.');
+      return;
+    }
+
+    this.httpClient.get<Rent>(
+      `${environment.apiUrl}/rent/${this.registerReceiptForm.value.rent_id}`,
+      { withCredentials: true }
+    ).subscribe({
+      next: response => {
+        console.log(response)
+        this.registerReceipt2(response)
+      }, error: error => {
+        console.log(error.error)
+      },
+    })
+  }
+
+  registerReceipt2(rent: Rent) {
+    this.httpClient.get<Car>(
+      `${environment.apiUrl}/car/${rent.car_id}`,
+      { withCredentials: true }
+    ).subscribe({
+      next: response => {
+        console.log(response)
+        this.registerReceipt3(rent, response)
+      }, error: error => {
+        console.log(error.error)
+      },
+    })
+  }
+
+  registerReceipt3(rent: Rent, car: Car) {
+    let beginDate = new Date(rent.begin);
+    let endDate = new Date(rent.end);
+    let returnDate = new Date(rent.return);
+
+    let days = Math.floor((endDate.getTime() - beginDate.getTime()) / (1000 * 60 * 60 * 24));
+    let delay = Math.floor((returnDate.getTime() - endDate.getTime()) / (1000 * 60 * 60 * 24));
+
     this.httpClient.post(
       `${environment.apiUrl}/receipts`,
-      this.registerReceiptForm.value,
+      {
+        user_id: rent.user_id,
+        car_id: rent.car_id,
+        kilometers: this.registerReceiptForm.value.kilometers,
+        begin: rent.begin,
+        end: rent.end,
+        delay: delay,
+        totalfee: (days + (delay)) * car.dailyfee,
+      },
       { withCredentials: true }
     ).subscribe({
       next: response => console.log(response),
-      error: error => console.log(error.error),
+      error: error => {
+        console.log(error.error)
+        if (rent.return === null && this.registerReceiptForm.value.kilometers !== '') {
+          window.alert('The car has not been returned yet.');
+        }
+      },
       complete: () => {
         console.log('request completed')
         this.getReceipts()

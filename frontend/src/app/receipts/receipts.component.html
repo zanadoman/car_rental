@@ -1,26 +1,16 @@
-<div class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center">
-  <div *ngIf="userRole !== 'customer'"
-       class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow"
-  >
+<div class="row bg-body-secondary rounded-3 shadow justify-content-center">
+  <div *ngIf="userRole !== 'customer'" class="pt-3 pt-md-5 row justify-content-center">
+    <div class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow">
     <h3 class="mb-4 fw-bold text-center">Register Receipt</h3>
     <form [formGroup]="registerReceiptForm" (ngSubmit)="registerReceipt()">
       <div class="form-floating mb-3">
-        <input id="register-form-user_id"
+        <input id="register-form-rent-id"
                class="form-control"
                type="number"
-               formControlName="user_id"
-               placeholder="user_id"
+               formControlName="rent_id"
+               placeholder="Rent ID"
         >
-        <label for="register-form-user_id">User ID</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input id="register-form-car_id"
-               class="form-control"
-               type="number"
-               formControlName="car_id"
-               placeholder="car_id"
-        >
-        <label for="register-form-car_id">Car ID</label>
+        <label for="register-form-rent-id">Rent ID</label>
       </div>
       <div class="form-floating mb-3">
         <input id="register-form-kilometers"
@@ -31,55 +21,14 @@
         >
         <label for="register-form-kilometers">Kilometers</label>
       </div>
-      <div class="form-floating mb-3">
-        <input  id="register-form-begin"
-                class="form-control"
-                type="date"
-                formControlName="begin"
-                placeholder="Begin"
-                value="{{ currentDate | date:'yyyy-MM-dd' }}"
-                max="{{ currentDate | date:'yyyy-MM-dd' }}"
-        >
-        <label for="register-form-begin">Begin</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input  id="register-form-end"
-                class="form-control"
-                type="date"
-                formControlName="end"
-                placeholder="End"
-                value="{{ currentDate | date:'yyyy-MM-dd' }}"
-                max="{{ currentDate | date:'yyyy-MM-dd' }}"
-        >
-        <label for="register-form-end">End</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input id="register-form-delay"
-               class="form-control"
-               type="text"
-               formControlName="delay"
-               placeholder="Delay"
-        >
-        <label for="register-form-delay">Delay</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input id="register-form-totalfee"
-               class="form-control"
-               type="text"
-               formControlName="totalfee"
-               placeholder="total fee ($)"
-        >
-        <label for="register-form-totalfee">Total fee ($)</label>
-      </div>
       <button class="btn btn-primary w-100" type="submit">Register</button>
     </form>
+    </div>
 </div>
 
-<div *ngFor="let receipt of receipts"
-     class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center"
->
+<div *ngFor="let receipt of receipts" class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center">
   <div class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow">
-    <ng-container *ngIf="userRole === 'salesman'">
+    <ng-container *ngIf="userRole !== 'admin'">
       <div class="">
         <h5 class="mb-4 fw-bold text-center">Receipt ID: {{ receipt.id }}</h5>
         <ul class="overflow-hidden">
@@ -112,6 +61,24 @@
           (ngSubmit)="updateReceipt(receipt.id)"
     >
       <h3 class="mb-4 fw-bold text-center">Update Form</h3>
+      <div class="form-floating mb-3">
+        <input id="update-form-user_id-{{ receipt.user_id }}"
+               class="form-control"
+               type="number"
+               formControlName="user_id"
+               placeholder="user_id"
+        >
+        <label for="update-form-user_id-{{ receipt.user_id }}">User ID</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-car_id-{{ receipt.car_id }}"
+               class="form-control"
+               type="number"
+               formControlName="car_id"
+               placeholder="car_id"
+        >
+        <label for="update-form-car_id-{{ receipt.car_id }}">Car ID</label>
+      </div>
       <div class="form-floating mb-3">
         <input id="update-form-kilometers-{{ receipt.kilometers }}"
                class="form-control"
@@ -153,7 +120,7 @@
         <label for="update-form-delay-{{ receipt.delay }}">Delay</label>
       </div>
       <div class="form-floating mb-3">
-        <input id="update-form-return-{{ receipt.totalfee }}"
+        <input id="update-form-totalfee-{{ receipt.totalfee }}"
                class="form-control"
                type="text"
                formControlName="totalfee"
