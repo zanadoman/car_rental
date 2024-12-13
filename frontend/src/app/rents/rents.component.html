@@ -133,7 +133,7 @@
 
           <ng-template #other_content>
             <button *ngIf="rent.takeaway && !rent.return" class="btn btn-primary w-100" type="button" (click)="returnRent(rent.id)">Return</button>
-            <button *ngIf="rent.return" class="btn btn-primary w-100" [ngClass]="{ 'active': router.url === '/receipt' }" routerLink="/receipt">
+            <button *ngIf="rent.return" class="btn btn-primary w-100" [ngClass]="{ 'active': router.url === '/receipts' }" routerLink="/receipts">
               Receipt
             </button>
           </ng-template>
@@ -192,7 +192,7 @@
           [formGroup]="filteredForms.get(rent.id)!"
           (ngSubmit)="updateRent(rent.id)"
     >
-      <h3 class="mb-4 fw-bold text-center">Update Form</h3>
+      <h3 class="mb-4 fw-bold text-center">Update Rent</h3>
       <div class="form-floating mb-3">
         <input id="update-form-kilometers-{{ rent.kilometers }}"
                class="form-control"

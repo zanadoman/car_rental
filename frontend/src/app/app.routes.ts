@@ -3,10 +3,12 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { CarsComponent } from './cars/cars.component';
 import { ReceiptsComponent } from './receipts/receipts.component';
 import { RentsComponent } from './rents/rents.component';
+import { UsersComponent } from './users/users.component';
 
 export const routes: Routes = [
   { path: '', component: AuthenticationComponent },
   { path: 'cars', component: CarsComponent },
   { path: 'receipts', component: ReceiptsComponent},
-  { path: 'rents', component: RentsComponent}
+  { path: 'rents', component: RentsComponent},
+  { path: 'users', component: UsersComponent}
 ];

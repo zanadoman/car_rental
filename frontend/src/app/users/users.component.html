@@ -1,0 +1,107 @@
+<div class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center">
+  <div *ngIf="userRole === 'admin'"
+       class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow"
+  >
+      <h3 class="mb-4 fw-bold text-center">Register User</h3>
+      <form [formGroup]="registerUserForm" (ngSubmit)="registerUser()">
+        <div class="form-floating mb-3">
+          <input id="register-form-name"
+                 class="form-control"
+                 type="text"
+                 formControlName="name"
+                 placeholder="Name"
+          >
+          <label for="register-form-name">Name</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input id="register-form-email"
+                 class="form-control"
+                 type="email"
+                 formControlName="email"
+                 placeholder="Email"
+          >
+          <label for="register-form-email">Email</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input id="register-form-password"
+                 class="form-control"
+                 type="password"
+                 formControlName="password"
+                 placeholder="Password"
+          >
+          <label for="register-form-password">Password</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input id="register-form-role"
+                 class="form-control"
+                 type="text"
+                 formControlName="role"
+                 placeholder="Role"
+          >
+          <label for="register-form-role">Role</label>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Register</button>
+      </form>
+</div>
+
+<div *ngFor="let user of users"
+       class="row pt-3 pt-md-5 bg-body-secondary rounded-3 shadow justify-content-center"
+>
+  <div class="col-11 col-lg-8 mb-3 mb-md-5 px-5 pt-4 pb-5 bg-body rounded-3 shadow">
+    <form *ngIf="userRole === 'admin' && filteredForms.has(user.id)"
+            [formGroup]="filteredForms.get(user.id)!"
+            (ngSubmit)="updateUser(user.id)"
+      >
+      <h3 class="mb-4 fw-bold text-center">Update Form</h3>
+      <div class="form-floating mb-3">
+        <input id="update-form-name-{{ user.name }}"
+               class="form-control"
+               type="text"
+               formControlName="name"
+               placeholder="Name"
+        >
+        <label for="update-form-name-{{ user.name }}">Name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-email-{{ user.email }}"
+               class="form-control"
+               type="text"
+               formControlName="email"
+               placeholder="Email"
+        >
+        <label for="update-form-name-{{ user.email }}">Email</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-password-{{ user.password }}"
+               class="form-control"
+               type="text"
+               formControlName="password"
+               placeholder="Password"
+        >
+        <label for="update-form-password-{{ user.password }}">Password</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="update-form-role-{{ user.role }}"
+               class="form-control"
+               type="text"
+               formControlName="role"
+               placeholder="Role"
+        >
+        <label for="update-form-role-{{ user.role }}">Role</label>
+        </div>
+        <div class="mb-3 mt-3">
+          <div *ngIf="!user.active; then content else other_content">idk</div>
+          <ng-template #content>
+            <button class="btn btn-primary w-100" type="button" (click)="activateUser(user.id)">Activate</button>
+          </ng-template>
+          <ng-template #other_content>
+            <button class="btn btn-primary w-100" type="button" (click)="deactivateUser(user.id)">Deactivate</button>
+          </ng-template>
+        </div>
+      <button class="btn btn-primary w-100 mb-3" type="submit">Update</button>
+      <button class="btn btn-danger w-100" type="button" (click)="deleteUser(user.id)">Delete</button>
+      </form>
+  </div>
+
+</div>
+

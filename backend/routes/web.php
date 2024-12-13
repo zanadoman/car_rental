@@ -46,6 +46,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
     Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
     Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
     Route::patch('/user/{id}', [UserController::class, 'edit']);
     Route::put('/user/{id}', [UserController::class, 'update']);
 });
