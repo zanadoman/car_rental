@@ -5,15 +5,6 @@
       <h3 class="mb-4 fw-bold text-center">Register User</h3>
       <form [formGroup]="registerUserForm" (ngSubmit)="registerUser()">
         <div class="form-floating mb-3">
-          <input id="register-form-id"
-                 class="form-control"
-                 type="number"
-                 formControlName="id"
-                 placeholder="ID"
-          >
-          <label for="register-form-id">ID</label>
-        </div>
-        <div class="form-floating mb-3">
           <input id="register-form-name"
                  class="form-control"
                  type="text"
@@ -21,15 +12,6 @@
                  placeholder="Name"
           >
           <label for="register-form-name">Name</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input id="register-form-password"
-                 class="form-control"
-                 type="text"
-                 formControlName="password"
-                 placeholder="Password"
-          >
-          <label for="register-form-password">Password</label>
         </div>
         <div class="form-floating mb-3">
           <input id="register-form-email"
@@ -41,6 +23,15 @@
           <label for="register-form-email">Email</label>
         </div>
         <div class="form-floating mb-3">
+          <input id="register-form-password"
+                 class="form-control"
+                 type="password"
+                 formControlName="password"
+                 placeholder="Password"
+          >
+          <label for="register-form-password">Password</label>
+        </div>
+        <div class="form-floating mb-3">
           <input id="register-form-role"
                  class="form-control"
                  type="text"
@@ -48,15 +39,6 @@
                  placeholder="Role"
           >
           <label for="register-form-role">Role</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input id="register-form-active"
-                 class="form-control"
-                 type="checkbox"
-                 formControlName="active"
-                 placeholder="Active"
-          >
-          <label for="register-form-active">Active</label>
         </div>
         <button class="btn btn-primary w-100" type="submit">Register</button>
       </form>

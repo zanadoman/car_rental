@@ -22,12 +22,10 @@ export class UsersComponent {
   userRole = 'visitor'
 
   registerUserForm = this.formBuilder.group({
-    id: '',
     name: '',
     email: '',
     password: '',
-    role: '',
-    active: false
+    role: ''
   })
 
 
@@ -71,7 +69,7 @@ export class UsersComponent {
     console.log('request started')
     console.log(this.registerUserForm.value)
     this.httpClient.post(
-      `${environment.apiUrl}/register`,
+      `${environment.apiUrl}/users`,
       this.registerUserForm.value,
       { withCredentials: true }
     ).subscribe({
