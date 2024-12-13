@@ -21,6 +21,12 @@
              routerLink="/receipts"
           >Receipts</a>
         </li>
+        <li *ngIf="userRole === 'admin'" class="nav-item">
+          <a class="nav-link"
+             [ngClass]="{ 'active': router.url === '/users' }"
+             routerLink="/users"
+          >Users</a>
+        </li>
       </ul>
     </div>
     <div *ngIf="userName !== null" class="d-flex align-items-center">

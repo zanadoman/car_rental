@@ -133,7 +133,7 @@
 
           <ng-template #other_content>
             <button *ngIf="rent.takeaway && !rent.return" class="btn btn-primary w-100" type="button" (click)="returnRent(rent.id)">Return</button>
-            <button *ngIf="rent.return" class="btn btn-primary w-100" [ngClass]="{ 'active': router.url === '/receipt' }" routerLink="/receipt">
+            <button *ngIf="rent.return" class="btn btn-primary w-100" [ngClass]="{ 'active': router.url === '/receipts' }" routerLink="/receipts">
               Receipt
             </button>
           </ng-template>
